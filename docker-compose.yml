@@ -1,4 +1,4 @@
-version: '3'
+version: '3.9'
 services:
   backend_app:
     build: ./backend
@@ -8,8 +8,12 @@ services:
       - "8000:80"
     volumes:
       - ./backend:/usr/app/backend
+    networks:
+      - app-network
+    restart: always
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   frontend_app:
     build: ./frontend
@@ -19,13 +23,30 @@ services:
       - "3000:3000"
     volumes:
       - ./frontend:/usr/app/frontend
+    networks:
+      - app-network
+    restart: always
     depends_on:
-      - backend_app
+      backend_app:
+        condition: service_started
 
   db:
     image: mysql
     container_name: baza
     ports:
       - "3306:3306"
+    command: --init-file /usr/app/database/init.sql
+    volumes:
+      - ./init.sql:/usr/app/database/init.sql
+    networks:
+      - app-network
     environment:
       MYSQL_ROOT_PASSWORD: 'password'
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 10s
+      retries: 5
+
+networks:
+  app-network:
+    driver: bridge

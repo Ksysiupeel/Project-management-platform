@@ -4,7 +4,7 @@ WORKDIR /usr/app/backend
 
 COPY . .
 
-RUN pip install django djangorestframework mysql-connector-python
+RUN pip install django djangorestframework mysqlclient
 
 EXPOSE 80
 
