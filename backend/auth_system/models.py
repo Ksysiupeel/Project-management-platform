@@ -7,7 +7,7 @@ class Project(models.Model):
     project_name = models.CharField(max_length=30)
     start_date = models.DateField()
     end_date = models.DateField()
-    status = models.CharField(max_length=4)
+    status = models.CharField(max_length=4, default="New")
     operations = models.CharField(max_length=200)
 
     def __str__(self):
@@ -29,7 +29,24 @@ class User(AbstractUser):
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["first_name", "last_name", "password", "gender", "birth_date"]
 
+    projects = models.ManyToManyField(Project, through="ProjectOwner")
+
     objects = UserManager()
 
     def __str__(self):
         return self.email
+
+
+class ProjectOwner(models.Model):
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.project_id.title} - {self.user_id.name}"
+
+
+class Comment(models.Model):
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
+    description = models.CharField(max_length=200)
+    date_added = models.DateTimeField(auto_now_add=True, blank=True)
