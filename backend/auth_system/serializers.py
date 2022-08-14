@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, Project
+from .models import User, Project, ProjectOwner
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -17,12 +17,33 @@ class UserSerializer(serializers.ModelSerializer):
         ]
 
     def create(self, validated_data):
-        user = super(UserSerializer, self).create(validated_data)
+        password = validated_data.pop("password", None)
+        instance = self.Meta.model(**validated_data)
+
+        if password is not None:
+            instance.set_password(password)
+
+        instance.save()
+
+        return instance
+
+    def update(self, instance, validated_data):
+        user = super().update(instance, validated_data)
         user.set_password(validated_data["password"])
         user.save()
         return user
 
 
 class ProjectSerializer(serializers.ModelSerializer):
-    model = Project
-    fields = "__all__"
+    class Meta:
+        model = Project
+        fields = "__all__"
+
+
+class ProjectOwnerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProjectOwner
+        fields = "__all__"
+
+    def to_representation(self, instance):
+        return super().to_representation(instance)

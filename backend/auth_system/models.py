@@ -42,7 +42,7 @@ class ProjectOwner(models.Model):
     project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.project_id.title} - {self.user_id.name}"
+        return f"{self.project_id.project_name} - {self.user_id.first_name}"
 
 
 class Comment(models.Model):
