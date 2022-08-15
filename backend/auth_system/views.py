@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from .serializers import UserSerializer, ProjectSerializer, ProjectOwnerSerializer
-from .models import User, Project
+from .models import ProjectOwner, User, Project
 
 
 class UserCreate(APIView):
@@ -59,3 +59,9 @@ class ProjectView(APIView):
         owner_ser.save()
 
         return Response(data={"msg": "Project added"}, status=status.HTTP_201_CREATED)
+
+    def put(self, request, pk, format=None):
+        pass
+
+    def delete(self, request, pk, format=None):
+        pass
