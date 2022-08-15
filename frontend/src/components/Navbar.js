@@ -23,11 +23,11 @@ const Navbar = () => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Management system
           </Typography>
-          <Button color="inherit" href="/login">
-            Login
+          <Button color="inherit" href="/signin">
+            Sign in
           </Button>
-          <Button color="inherit" href="/register">
-            Register
+          <Button color="inherit" href="/signup">
+            Sign up
           </Button>
           <Button color="inherit" href="/projects">
             Projects

@@ -1,12 +1,15 @@
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny
 from .serializers import UserSerializer, ProjectSerializer, ProjectOwnerSerializer
-from .models import ProjectOwner, User, Project
+from .models import User, Project
 
 
 class UserCreate(APIView):
+
+    permission_classes = (AllowAny, )
+
     def post(self, request):
         ser = UserSerializer(data=request.data)
         ser.is_valid(raise_exception=True)
@@ -15,8 +18,6 @@ class UserCreate(APIView):
 
 
 class UserView(APIView):
-
-    permission_classes = (IsAuthenticated,)
 
     def patch(self, request):
         user = User.objects.filter(id=request.user.id).first()
@@ -29,7 +30,6 @@ class UserView(APIView):
 
 class ProjectView(APIView):
 
-    permission_classes = (IsAuthenticated,)
 
     def get(self, request):
         projects = Project.objects.filter(user=request.user)

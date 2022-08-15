@@ -3,6 +3,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
 import { useState } from "react";
+import axios from "axios";
 
 const Register = () => {
   const [first_name, setFirst_Name] = useState("");
@@ -13,20 +14,31 @@ const Register = () => {
   const [birth_date, setBirth_Date] = useState("");
 
   const handleSubmit = () => {
-    console.log(gender);
+    axios
+      .post("http://127.0.0.1:8000/api/user/create/", {
+        first_name: first_name,
+        last_name: last_name,
+        email: email,
+        password: password,
+        gender: gender,
+        birth_date: birth_date,
+      })
+      .then((reponse) => {
+        console.log(reponse.data.msg);
+      });
   };
 
   return (
-    <div className="register-form">
+    <div className="signup-form">
       <form>
         <TextField
-          required
           style={{ width: "200px", margin: "5px" }}
           type="text"
           label="first_name"
           variant="outlined"
           value={first_name}
           onChange={(e) => setFirst_Name(e.target.value)}
+          required
         />
 
         <br />
@@ -89,7 +101,7 @@ const Register = () => {
 
         <br />
         <Button onClick={handleSubmit} variant="contained" color="primary">
-          save
+          Sign up
         </Button>
       </form>
     </div>
