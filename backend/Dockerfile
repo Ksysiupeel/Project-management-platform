@@ -4,7 +4,7 @@ WORKDIR /usr/app/backend
 
 COPY . .
 
-RUN pip install django djangorestframework mysqlclient
+RUN pip install -r requirements.txt
 
 EXPOSE 80
 

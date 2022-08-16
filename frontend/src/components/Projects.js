@@ -8,7 +8,9 @@ const Projects = () => {
   const [status, setStatus] = useState("");
   const [opeartions, setOperations] = useState("");
 
-  axiosInstance.get("/projects/").then((res) => {});
+  axiosInstance.get("/user/projects/").then((res) => {
+    console.log(res.data);
+  });
 };
 
 export default Projects;

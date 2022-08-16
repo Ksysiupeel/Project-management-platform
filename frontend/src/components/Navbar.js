@@ -32,7 +32,16 @@ const Navbar = () => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Management system
           </Typography>
-          {!islogin && (
+          {islogin ? (
+            <div>
+              <Button color="inherit" href="/projects">
+                Projects
+              </Button>
+              <Button color="inherit" href="/logout">
+                Log out
+              </Button>
+            </div>
+          ) : (
             <div>
               <Button color="inherit" href="/signin">
                 Sign in
@@ -42,9 +51,6 @@ const Navbar = () => {
               </Button>
             </div>
           )}
-          <Button color="inherit" href="/projects">
-            Projects
-          </Button>
         </Toolbar>
       </AppBar>
     </Box>

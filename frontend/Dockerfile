@@ -4,7 +4,7 @@ WORKDIR /usr/app/frontend
 
 COPY . .
 
-RUN npm install
+RUN npm install 
 
 EXPOSE 3000
 

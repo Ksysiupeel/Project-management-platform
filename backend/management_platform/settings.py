@@ -85,7 +85,7 @@ DATABASES = {
         "NAME": "Management_platform",
         "USER": "root",
         "PASSWORD": "password",
-        "HOST": "db",
+        "HOST": "baza",
         "PORT": "3306",
         "OPTIONS": {
             "init_command": "SET sql_mode=STRICT_TRANS_TABLES",
@@ -138,8 +138,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
-    #"DATETIME_FORMAT": "%d/%m/%Y",
-    #"DATE_INPUT_FORMATS": ["%d-%m-%Y"],
+    # "DATETIME_FORMAT": "%d/%m/%Y",
+    # "DATE_INPUT_FORMATS": ["%d-%m-%Y"],
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
