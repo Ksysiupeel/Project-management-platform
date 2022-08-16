@@ -1,8 +1,11 @@
 import { TextField, Button } from "@mui/material";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axiosInstance from "../axiosApi";
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -17,6 +20,7 @@ const Login = () => {
           "JWT " + res.data.access;
         window.localStorage.setItem("access_token", res.data.access);
         window.localStorage.setItem("refresh_token", res.data.refresh);
+        navigate("/projects");
       })
       .catch((error) => {
         throw error;

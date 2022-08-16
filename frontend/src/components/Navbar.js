@@ -37,6 +37,9 @@ const Navbar = () => {
               <Button color="inherit" href="/projects">
                 Projects
               </Button>
+              <Button color="inherit" href="/edit-user">
+                Change your data
+              </Button>
               <Button color="inherit" href="/logout">
                 Log out
               </Button>

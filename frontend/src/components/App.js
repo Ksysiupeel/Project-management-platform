@@ -5,6 +5,7 @@ import Register from "./Register";
 import Login from "./Login";
 import Projects from "./Projects";
 import Logout from "./Logout";
+import UserEdit from "./UserEdit";
 import "../css/app.css";
 
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
           <Route path="/signup" element={<Register />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/logout" element={<Logout />} />
+          <Route path="/edit-user" element={<UserEdit />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>

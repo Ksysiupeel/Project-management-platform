@@ -8,7 +8,7 @@ from .models import User, Project
 
 class UserCreate(APIView):
 
-    permission_classes = (AllowAny, )
+    permission_classes = (AllowAny,)
 
     def post(self, request):
         ser = UserSerializer(data=request.data)
@@ -18,6 +18,10 @@ class UserCreate(APIView):
 
 
 class UserView(APIView):
+    def get(self, request):
+        user = User.objects.filter(id=request.user.id).first()
+        ser = UserSerializer(user)
+        return Response(data=ser.data, status=status.HTTP_200_OK)
 
     def patch(self, request):
         user = User.objects.filter(id=request.user.id).first()
@@ -29,8 +33,6 @@ class UserView(APIView):
 
 
 class ProjectView(APIView):
-
-
     def get(self, request):
         projects = Project.objects.filter(user=request.user)
         ser = ProjectSerializer(projects, many=True)
