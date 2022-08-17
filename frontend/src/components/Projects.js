@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axiosInstance from "../axiosApi";
+import axiosInstance from "./axiosApi";
 
 const Projects = () => {
   const [name, setName] = useState("");
