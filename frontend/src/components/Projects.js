@@ -2,6 +2,8 @@ import axiosInstance from "./axiosApi";
 import UserEdit from "./modals/UserEdit";
 import ProjectEdit from "./modals/ProjectEdit";
 import CommentAdd from "./modals/CommentAdd";
+import ProjectAdd from "./modals/ProjectAdd";
+import ProjectDetails from "./modals/ProjectDetails";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -18,7 +20,7 @@ const Projects = () => {
         setIsloading(false);
       });
     }, 2000);
-  });
+  }, [data]);
 
   const handleDelete = (id) => {
     axiosInstance.delete(`/user/projects/${id}/`).then(() => {
@@ -29,6 +31,8 @@ const Projects = () => {
   return (
     <div className="projects">
       {isloading && <div>Loading....</div>}
+      <UserEdit /> <br /> <br />
+      <ProjectAdd />
       {data && (
         <div className="projects-list">
           {data.map((project) => (
@@ -39,6 +43,7 @@ const Projects = () => {
               <p>Project status: {project.status}</p>
               <ProjectEdit p={project} />
               <CommentAdd user_id={project.id} project_id={project.id} />
+              <ProjectDetails id={project.id} />
               <button
                 onClick={() => {
                   handleDelete(project.id);

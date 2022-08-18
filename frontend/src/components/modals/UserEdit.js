@@ -32,7 +32,7 @@ const UserEdit = () => {
 
   const handleSubmit = () => {
     axiosInstance
-      .patch("/user/edit/", {
+      .put("/user/edit/", {
         first_name: first_name,
         last_name: last_name,
         email: email,
@@ -65,7 +65,7 @@ const UserEdit = () => {
 
   return (
     <>
-      <Button colorScheme="telegram" onClick={onOpen} size="m">
+      <Button colorScheme="whatsapp" onClick={onOpen} size="md">
         Change your data
       </Button>
 

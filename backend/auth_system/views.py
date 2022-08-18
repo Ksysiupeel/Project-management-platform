@@ -123,9 +123,11 @@ class ProjectView(APIView):
 
 
 class CommentView(APIView):
-    def get(self, request):
+    def get(self, request, pk, format=None):
         try:
-            pass
+            comment = Comment.objects.filter(project_id=pk)
+            ser = CommentSerializer(comment, many=True)
+            return Response(data=ser.data, status=status.HTTP_200_OK)
         except:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
