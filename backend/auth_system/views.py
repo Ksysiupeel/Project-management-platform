@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from .serializers import UserSerializer, ProjectSerializer, ProjectOwnerSerializer
-from .models import User, Project
+from .models import User, Project, ProjectOwner
 
 
 class UserCreate(APIView):
@@ -66,4 +66,9 @@ class ProjectView(APIView):
         pass
 
     def delete(self, request, pk, format=None):
-        pass
+        try:
+            Project.objects.filter(id=pk).delete()
+            ProjectOwner.objects.filter(project_id=pk).delete()
+            return Response(data={"msg": "Project deleted"}, status=status.HTTP_200_OK)
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)

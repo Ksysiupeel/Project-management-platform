@@ -1,9 +1,23 @@
-import { TextField, Button } from "@mui/material";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import InputLabel from "@mui/material/InputLabel";
-import { useEffect, useState } from "react";
 import axiosInstance from "../axiosApi";
+import { useState } from "react";
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  FormControl,
+  Text,
+  Input,
+  ModalFooter,
+  Button,
+  Radio,
+  RadioGroup,
+  useDisclosure,
+  Stack,
+} from "@chakra-ui/react";
+import { toast } from "react-toastify";
 
 const UserEdit = () => {
   const [first_name, setFirst_Name] = useState("");
@@ -13,6 +27,8 @@ const UserEdit = () => {
   const [gender, setGender] = useState("");
   const [birth_date, setBirth_Date] = useState("");
   const [phone_number, setPhone_Number] = useState("");
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleSubmit = () => {
     axiosInstance
@@ -25,102 +41,120 @@ const UserEdit = () => {
         birth_date: birth_date,
         phone_number: phone_number,
       })
-      .then((response) => {
-        console.log(response.data.msg);
+      .then(() => {
+        toast.success("User was created!", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+        });
       })
-      .catch((error) => {
-        throw error;
+      .catch(() => {
+        toast.error("Something went wrong!", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+        });
       });
   };
 
   return (
-    <div className="edit-form">
-      <form>
-        <TextField
-          style={{ width: "200px", margin: "5px" }}
-          type="text"
-          label="first_name"
-          variant="outlined"
-          value={first_name}
-          onChange={(e) => setFirst_Name(e.target.value)}
-          required
-        />
+    <>
+      <Button colorScheme="facebook" onClick={onOpen}>
+        Change your data
+      </Button>
 
-        <br />
-        <TextField
-          style={{ width: "200px", margin: "5px" }}
-          type="text"
-          label="last_name"
-          variant="outlined"
-          value={last_name}
-          onChange={(e) => setLast_Name(e.target.value)}
-          required
-        />
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader textAlign="center">Data change</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <form>
+              <FormControl>
+                <Text>First name</Text>
+                <Input
+                  type="text"
+                  value={first_name}
+                  onChange={(e) => {
+                    setFirst_Name(e.target.value);
+                  }}
+                />
+                <br />
+                <Text>Last name</Text>
+                <Input
+                  type="text"
+                  value={last_name}
+                  onChange={(e) => {
+                    setLast_Name(e.target.value);
+                  }}
+                />
 
-        <br />
-        <TextField
-          style={{ width: "200px", margin: "5px" }}
-          type="text"
-          label="email"
-          variant="outlined"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
+                <br />
+                <Text>Email</Text>
+                <Input
+                  type="email"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
+                />
 
-        <br />
-        <TextField
-          style={{ width: "200px", margin: "5px" }}
-          type="password"
-          label="password"
-          variant="outlined"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+                <br />
+                <Text>Password</Text>
+                <Input
+                  type="password"
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
+                />
 
-        <br />
-        <InputLabel id="gender">Gender</InputLabel>
-        <Select
-          label="gender"
-          value={gender}
-          onChange={(e) => {
-            setGender(e.target.value);
-          }}
-        >
-          <MenuItem value="Man">Man</MenuItem>
-          <MenuItem value="Woman">Woman</MenuItem>
-        </Select>
+                <br />
+                <Text>Gender</Text>
+                <RadioGroup onChange={setGender} value={gender}>
+                  <Stack>
+                    <Radio value="Man">Man</Radio>
+                    <Radio value="Woman">Woman</Radio>
+                  </Stack>
+                </RadioGroup>
 
-        <br />
-        <br />
-        <InputLabel id="birth_date">Birth_date</InputLabel>
-        <TextField
-          style={{ width: "200px", margin: "5px" }}
-          type="date"
-          variant="outlined"
-          value={birth_date}
-          onChange={(e) => setBirth_Date(e.target.value)}
-          required
-        />
+                <br />
+                <Text>Birth date</Text>
+                <Input
+                  type="date"
+                  value={birth_date}
+                  onChange={(e) => {
+                    setBirth_Date(e.target.value);
+                  }}
+                />
 
-        <br />
-        <TextField
-          style={{ width: "200px", margin: "5px" }}
-          type="text"
-          label="Phone number"
-          variant="outlined"
-          value={phone_number}
-          onChange={(e) => setPhone_Number(e.target.value)}
-          required
-        />
+                <br />
+                <Text>Phone number</Text>
+                <Input
+                  type="text"
+                  value={phone_number}
+                  onChange={(e) => {
+                    setPhone_Number(e.target.value);
+                  }}
+                />
+              </FormControl>
+            </form>
+          </ModalBody>
 
-        <br />
-        <Button onClick={handleSubmit} variant="contained" color="primary">
-          Change
-        </Button>
-      </form>
-    </div>
+          <ModalFooter>
+            <Button onClick={handleSubmit} type="submit" colorScheme="red">
+              Change
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
   );
 };
 

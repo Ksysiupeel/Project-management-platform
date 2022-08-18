@@ -8,7 +8,7 @@ class Project(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     status = models.CharField(max_length=4, default="New")
-    operations = models.CharField(max_length=200)
+    description = models.CharField(max_length=200)
 
     def __str__(self):
         return self.project_name

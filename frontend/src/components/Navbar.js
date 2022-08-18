@@ -1,62 +1,57 @@
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
 import { useState, useEffect } from "react";
 
 const Navbar = () => {
-  const [islogin, setIslogin] = useState(false);
+  const [islogged, SetIsLogged] = useState(false);
 
   useEffect(() => {
-    if (window.localStorage.length > 0) {
-      setIslogin(true);
-    }
+    setTimeout(() => {
+      if (window.localStorage.length > 1) {
+        SetIsLogged(true);
+      }
+    }, "0.1 second");
   });
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
+    <nav className="navbar">
+      <h1>Management system</h1>
+      <div className="links">
+        {islogged ? (
+          <a
+            href="/projects"
+            style={{
+              color: "white",
+              backgroundColor: "#2AABEE",
+              borderRadius: "8px",
+            }}
           >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Management system
-          </Typography>
-          {islogin ? (
-            <div>
-              <Button color="inherit" href="/projects">
-                Projects
-              </Button>
-              <Button color="inherit" href="/edit-user">
-                Change your data
-              </Button>
-              <Button color="inherit" href="/logout">
-                Log out
-              </Button>
-            </div>
-          ) : (
-            <div>
-              <Button color="inherit" href="/signin">
-                Sign in
-              </Button>
-              <Button color="inherit" href="/signup">
-                Sign up
-              </Button>
-            </div>
-          )}
-        </Toolbar>
-      </AppBar>
-    </Box>
+            Projects
+          </a>
+        ) : (
+          <a
+            href="/"
+            style={{
+              color: "white",
+              backgroundColor: "#2AABEE",
+              borderRadius: "8px",
+            }}
+          >
+            Home
+          </a>
+        )}
+        {islogged ? (
+          <a
+            href="/logout"
+            style={{
+              color: "white",
+              backgroundColor: "green",
+              borderRadius: "8px",
+            }}
+          >
+            Logout
+          </a>
+        ) : null}
+      </div>
+    </nav>
   );
 };
 

@@ -5,10 +5,10 @@ const Logout = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (window.localStorage.length > 0) {
+    if (window.localStorage.length > 1) {
       window.localStorage.clear();
     }
-    navigate("/signin");
+    navigate("/");
   });
 };
 

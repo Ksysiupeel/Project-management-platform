@@ -4,8 +4,7 @@ import Register from "./modals/Register";
 const HomePage = () => {
   return (
     <div className="home-page">
-      <h1>Project management system</h1>
-      <Login />
+      <Login /> <br /> <br />
       <Register />
     </div>
   );

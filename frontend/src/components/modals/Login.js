@@ -52,14 +52,14 @@ const Login = () => {
 
   return (
     <>
-      <Button colorScheme="green" onClick={onOpen}>
+      <Button colorScheme="green" onClick={onOpen} size="lg">
         Sign in!
       </Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader textAlign="center">Sign in!</ModalHeader>
+          <ModalHeader textAlign="center">Sign in</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <form>

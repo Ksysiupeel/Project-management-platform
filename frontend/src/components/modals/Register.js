@@ -30,8 +30,6 @@ const Register = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleSubmit = () => {
-    console.log(gender);
-
     axios
       .post("http://127.0.0.1:8000/api/user/create/", {
         first_name: first_name,
@@ -65,14 +63,14 @@ const Register = () => {
 
   return (
     <>
-      <Button colorScheme="telegram" onClick={onOpen}>
+      <Button colorScheme="telegram" onClick={onOpen} size="lg">
         Sign up!
       </Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader textAlign="center">Sign up!</ModalHeader>
+          <ModalHeader textAlign="center">Sign up</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <form>
