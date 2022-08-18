@@ -19,51 +19,80 @@ class UserCreate(APIView):
 
 class UserView(APIView):
     def get(self, request):
-        user = User.objects.filter(id=request.user.id).first()
-        ser = UserSerializer(user)
-        return Response(data=ser.data, status=status.HTTP_200_OK)
+        try:
+            user = User.objects.filter(id=request.user.id).first()
+            ser = UserSerializer(user)
+            return Response(data=ser.data, status=status.HTTP_200_OK)
+        except:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
 
     def patch(self, request):
-        user = User.objects.filter(id=request.user.id).first()
-        ser = UserSerializer(user, data=request.data)
-        ser.is_valid(raise_exception=True)
-        ser.save()
+        try:
+            user = User.objects.filter(id=request.user.id).first()
+            ser = UserSerializer(user, data=request.data)
+            ser.is_valid(raise_exception=True)
+            ser.save()
 
-        return Response(data={"msg": "Data was changed"}, status=status.HTTP_200_OK)
+            return Response(data={"msg": "Data was changed"}, status=status.HTTP_200_OK)
+        except:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 
 class ProjectView(APIView):
     def get(self, request):
-        projects = Project.objects.filter(user=request.user)
-        ser = ProjectSerializer(projects, many=True)
-        return Response(data=ser.data, status=status.HTTP_200_OK)
+        try:
+            projects = Project.objects.filter(user=request.user)
+            ser = ProjectSerializer(projects, many=True)
+            return Response(data=ser.data, status=status.HTTP_200_OK)
+        except:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
 
     def post(self, request):
-        ser = ProjectSerializer(
-            data={
-                "project_name": request.data["project_name"],
-                "start_date": request.data["start_date"],
-                "end_date": request.data["end_date"],
-                "operations": request.data["operations"],
-            }
-        )
+        try:
+            ser = ProjectSerializer(
+                data={
+                    "project_name": request.data["project_name"],
+                    "start_date": request.data["start_date"],
+                    "end_date": request.data["end_date"],
+                    "description": request.data["description"],
+                }
+            )
 
-        ser.is_valid(raise_exception=True)
+            ser.is_valid(raise_exception=True)
 
-        ser.save()
+            ser.save()
 
-        owner_ser = ProjectOwnerSerializer(
-            data={"user_id": request.user.id, "project_id": ser.data["id"]}
-        )
+            owner_ser = ProjectOwnerSerializer(
+                data={"user_id": request.user.id, "project_id": ser.data["id"]}
+            )
 
-        owner_ser.is_valid(raise_exception=True)
+            owner_ser.is_valid(raise_exception=True)
 
-        owner_ser.save()
+            owner_ser.save()
 
-        return Response(data={"msg": "Project added"}, status=status.HTTP_201_CREATED)
+            return Response(
+                data={"msg": "Project added"}, status=status.HTTP_201_CREATED
+            )
+        except:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
 
     def put(self, request, pk, format=None):
-        pass
+        try:
+            project = Project.objects.filter(id=pk).first()
+            ser = ProjectSerializer(project, data=request.data)
+            ser.is_valid(raise_exception=True)
+            ser.save()
+
+            owner_ser = ProjectOwnerSerializer(
+                data={"user_id": request.user.id, "project_id": ser.data["id"]}
+            )
+
+            owner_ser.is_valid(raise_exception=True)
+
+            return Response(data={"msg": "Project updated"}, status=status.HTTP_200_OK)
+
+        except:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
 
     def delete(self, request, pk, format=None):
         try:
@@ -71,4 +100,4 @@ class ProjectView(APIView):
             ProjectOwner.objects.filter(project_id=pk).delete()
             return Response(data={"msg": "Project deleted"}, status=status.HTTP_200_OK)
         except:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
