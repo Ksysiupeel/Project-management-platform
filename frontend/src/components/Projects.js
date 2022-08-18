@@ -41,6 +41,7 @@ const Projects = () => {
               <p>Project start date: {project.start_date}</p>
               <p>Project end date: {project.end_date}</p>
               <p>Project status: {project.status}</p>
+              <p>Project description: {project.description}</p>
               <ProjectEdit p={project} />
               <CommentAdd user_id={project.id} project_id={project.id} />
               <ProjectDetails id={project.id} />
