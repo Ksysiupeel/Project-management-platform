@@ -1,4 +1,7 @@
 import axiosInstance from "./axiosApi";
+import UserEdit from "./modals/UserEdit";
+import ProjectEdit from "./modals/ProjectEdit";
+import CommentAdd from "./modals/CommentAdd";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -31,9 +34,11 @@ const Projects = () => {
           {data.map((project) => (
             <div className="projects-preview" key={project.id}>
               <h2>{project.project_name}</h2>
-              <p>Data rozpoczęcia projektu: {project.start_date}</p>
-              <p>Data zakończenia projektu: {project.end_date}</p>
-              <p>Status projektu: {project.status}</p>
+              <p>Project start date: {project.start_date}</p>
+              <p>Project end date: {project.end_date}</p>
+              <p>Project status: {project.status}</p>
+              <ProjectEdit p={project} />
+              <CommentAdd user_id={project.id} project_id={project.id} />
               <button
                 onClick={() => {
                   handleDelete(project.id);

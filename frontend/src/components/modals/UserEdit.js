@@ -42,7 +42,7 @@ const UserEdit = () => {
         phone_number: phone_number,
       })
       .then(() => {
-        toast.success("User was created!", {
+        toast.success("User was updated!", {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: false,
@@ -65,7 +65,7 @@ const UserEdit = () => {
 
   return (
     <>
-      <Button colorScheme="facebook" onClick={onOpen}>
+      <Button colorScheme="telegram" onClick={onOpen} size="m">
         Change your data
       </Button>
 
