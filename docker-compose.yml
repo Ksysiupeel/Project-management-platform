@@ -7,7 +7,7 @@ services:
     ports:
       - "8000:80"
     volumes:
-      - ./backend:/usr/app/backend
+      - /usr/app/backend
     networks:
       - app-network
     restart: always
@@ -22,7 +22,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./frontend:/usr/app/frontend
+      - /usr/app/frontend
     networks:
       - app-network
     restart: always

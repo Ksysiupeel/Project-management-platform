@@ -21,5 +21,6 @@ docker-compose up -d
 Then:
 
 ```bash
+docker exec -it backend python manage.py makemigrations
 docker exec -it backend python manage.py migrate
 ```
