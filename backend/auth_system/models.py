@@ -29,7 +29,7 @@ class User(AbstractUser):
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["first_name", "last_name", "password", "gender", "birth_date"]
 
-    projects = models.ManyToManyField(Project, through="ProjectOwner")
+    projects = models.ManyToManyField(Project, through="ProjectMembers")
 
     objects = UserManager()
 
@@ -37,7 +37,7 @@ class User(AbstractUser):
         return self.email
 
 
-class ProjectOwner(models.Model):
+class ProjectMembers(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
 

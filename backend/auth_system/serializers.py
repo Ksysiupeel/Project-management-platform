@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, Project, ProjectOwner, Comment
+from .models import User, Project, ProjectMembers, Comment
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -40,9 +40,9 @@ class ProjectSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class ProjectOwnerSerializer(serializers.ModelSerializer):
+class ProjectMembersSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ProjectOwner
+        model = ProjectMembers
         fields = "__all__"
 
     def to_representation(self, instance):
@@ -56,3 +56,9 @@ class CommentSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         return super().to_representation(instance)
+
+
+class UserListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ("id", "first_name", "last_name")

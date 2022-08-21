@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { toast } from "react-toastify";
 
-const CommentAdd = ({ user_id, project_id }) => {
+const CommentAdd = ({ project_id }) => {
   const [description, setDescription] = useState("");
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -24,7 +24,6 @@ const CommentAdd = ({ user_id, project_id }) => {
   const handleSubmit = () => {
     axiosInstance
       .post("/user/comment/add/", {
-        user_id: user_id,
         project_id: project_id,
         description: description,
       })

@@ -1,4 +1,5 @@
 import axiosInstance from "../axiosApi";
+import useUserList from "../useUserList";
 import { useState } from "react";
 import {
   Modal,
@@ -13,6 +14,9 @@ import {
   ModalFooter,
   Button,
   useDisclosure,
+  Radio,
+  RadioGroup,
+  Stack,
 } from "@chakra-ui/react";
 import { toast } from "react-toastify";
 
@@ -21,8 +25,10 @@ const ProjectAdd = () => {
   const [start_date, setStart_Date] = useState("");
   const [end_date, setEnd_Date] = useState("");
   const [description, setDescription] = useState("");
+  const [user_id, setUser_id] = useState("None");
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { data } = useUserList();
 
   const handleSubmit = () => {
     axiosInstance
@@ -31,6 +37,7 @@ const ProjectAdd = () => {
         start_date: start_date,
         end_date: end_date,
         description: description,
+        user_id: user_id,
       })
       .then(() => {
         toast.success("Project was created!", {
@@ -106,6 +113,18 @@ const ProjectAdd = () => {
                     setDescription(e.target.value);
                   }}
                 />
+
+                <br />
+                <Text>Add user to the project</Text>
+                <RadioGroup onChange={setUser_id} value={user_id}>
+                  <Stack>
+                    {data.map((user) => (
+                      <Radio key={user.id} value={user.id}>
+                        {user.first_name} {user.last_name}
+                      </Radio>
+                    ))}
+                  </Stack>
+                </RadioGroup>
               </FormControl>
             </form>
           </ModalBody>

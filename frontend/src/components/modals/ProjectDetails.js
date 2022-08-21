@@ -24,7 +24,7 @@ const ProjectDetails = ({ id }) => {
       setComment_Data(res.data);
       setIscomment(true);
     });
-  }, []);
+  });
 
   return (
     <>
@@ -37,15 +37,12 @@ const ProjectDetails = ({ id }) => {
           <ModalCloseButton />
           <ModalBody>
             <Stack>
-              {iscomment ? (
-                comment_data.map((data) => (
-                  <Text key={data.id}>
-                    {data.date_added} | {data.description} <br />
+              {iscomment &&
+                comment_data.map((comment) => (
+                  <Text key={comment.id}>
+                    {comment.date_added} | {comment.description}
                   </Text>
-                ))
-              ) : (
-                <Text>No comments</Text>
-              )}
+                ))}
             </Stack>
           </ModalBody>
           <ModalFooter>

@@ -20,7 +20,7 @@ const Projects = () => {
         setIsloading(false);
       });
     }, 2000);
-  }, [data]);
+  });
 
   const handleDelete = (id) => {
     axiosInstance.delete(`/user/projects/${id}/`).then(() => {
@@ -43,7 +43,7 @@ const Projects = () => {
               <p>Project status: {project.status}</p>
               <p>Project description: {project.description}</p>
               <ProjectEdit p={project} />
-              <CommentAdd user_id={project.id} project_id={project.id} />
+              <CommentAdd project_id={project.id} />
               <ProjectDetails id={project.id} />
               <button
                 onClick={() => {

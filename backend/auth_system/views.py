@@ -5,10 +5,11 @@ from rest_framework.permissions import AllowAny
 from .serializers import (
     UserSerializer,
     ProjectSerializer,
-    ProjectOwnerSerializer,
+    ProjectMembersSerializer,
     CommentSerializer,
+    UserListSerializer,
 )
-from .models import User, Project, ProjectOwner, Comment
+from .models import User, Project, ProjectMembers, Comment
 
 
 class UserCreate(APIView):
@@ -75,19 +76,31 @@ class ProjectView(APIView):
 
                 ser.save()
 
-                owner_ser = ProjectOwnerSerializer(
+                member_ser = ProjectMembersSerializer(
                     data={"user_id": request.user.id, "project_id": ser.data["id"]}
                 )
 
-                owner_ser.is_valid(raise_exception=True)
+                member_ser.is_valid(raise_exception=True)
 
-                owner_ser.save()
+                member_ser.save()
+
+                if request.data["user_id"] != "None":
+
+                    member = ProjectMembersSerializer(
+                        data={
+                            "user_id": request.data["user_id"],
+                            "project_id": ser.data["id"],
+                        }
+                    )
+                    member.is_valid(raise_exception=True)
+                    member.save()
 
                 return Response(
                     data={"msg": "Project added"}, status=status.HTTP_201_CREATED
                 )
 
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
         except:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
@@ -98,11 +111,11 @@ class ProjectView(APIView):
             if ser.is_valid():
                 ser.save()
 
-                owner_ser = ProjectOwnerSerializer(
+                member_ser = ProjectMembersSerializer(
                     data={"user_id": request.user.id, "project_id": ser.data["id"]}
                 )
 
-                owner_ser.is_valid(raise_exception=True)
+                member_ser.is_valid(raise_exception=True)
 
                 return Response(
                     data={"msg": "Project updated"}, status=status.HTTP_200_OK
@@ -116,7 +129,7 @@ class ProjectView(APIView):
     def delete(self, request, pk, format=None):
         try:
             Project.objects.filter(id=pk).delete()
-            ProjectOwner.objects.filter(project_id=pk).delete()
+            ProjectMembers.objects.filter(project_id=pk).delete()
             return Response(data={"msg": "Project deleted"}, status=status.HTTP_200_OK)
         except:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
@@ -152,5 +165,15 @@ class CommentView(APIView):
 
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
+        except:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+
+class UserListView(APIView):
+    def get(self, request):
+        try:
+            users = User.objects.exclude(id=request.user.id)
+            ser = UserListSerializer(users, many=True)
+            return Response(data=ser.data, status=status.HTTP_200_OK)
         except:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
