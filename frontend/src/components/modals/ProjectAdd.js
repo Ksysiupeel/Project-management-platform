@@ -25,7 +25,7 @@ const ProjectAdd = () => {
   const [start_date, setStart_Date] = useState("");
   const [end_date, setEnd_Date] = useState("");
   const [description, setDescription] = useState("");
-  const [user_id, setUser_id] = useState("None");
+  const [user_id, setUser_id] = useState(null);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { data } = useUserList();
@@ -115,22 +115,33 @@ const ProjectAdd = () => {
                 />
 
                 <br />
-                <Text>Add user to the project</Text>
-                <RadioGroup onChange={setUser_id} value={user_id}>
-                  <Stack>
-                    {data.map((user) => (
-                      <Radio key={user.id} value={user.id}>
-                        {user.first_name} {user.last_name}
-                      </Radio>
-                    ))}
-                  </Stack>
-                </RadioGroup>
+                {data.length && (
+                  <>
+                    <Text>Add user to the project</Text>
+                    <RadioGroup onChange={setUser_id} value={user_id}>
+                      <Stack>
+                        {data.map((user) => (
+                          <Radio key={user.id} value={user.id}>
+                            {user.first_name} {user.last_name}
+                          </Radio>
+                        ))}
+                      </Stack>
+                    </RadioGroup>
+                  </>
+                )}
               </FormControl>
             </form>
           </ModalBody>
 
           <ModalFooter>
-            <Button onClick={handleSubmit} type="submit" colorScheme="red">
+            <Button
+              onClick={() => {
+                handleSubmit();
+                onClose();
+              }}
+              type="submit"
+              colorScheme="red"
+            >
               Create
             </Button>
           </ModalFooter>

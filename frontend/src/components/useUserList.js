@@ -8,7 +8,7 @@ const useUserList = () => {
     axiosInstance.get("/users/").then((r) => {
       setData(r.data);
     });
-  });
+  }, []);
 
   return { data };
 };

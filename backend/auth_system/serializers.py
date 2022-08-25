@@ -29,7 +29,8 @@ class UserSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         user = super().update(instance, validated_data)
-        user.set_password(validated_data["password"])
+        if validated_data.get("password") is not None:
+            user.set_password(validated_data["password"])
         user.save()
         return user
 

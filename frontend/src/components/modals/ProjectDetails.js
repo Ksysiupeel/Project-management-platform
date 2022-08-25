@@ -24,7 +24,7 @@ const ProjectDetails = ({ id }) => {
       setComment_Data(res.data);
       setIscomment(true);
     });
-  });
+  }, []);
 
   return (
     <>

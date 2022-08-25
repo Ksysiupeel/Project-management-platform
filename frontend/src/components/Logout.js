@@ -5,8 +5,9 @@ const Logout = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (window.localStorage.length > 1) {
-      window.localStorage.clear();
+    if (window.localStorage.getItem("access_token")) {
+      window.localStorage.removeItem("access_token");
+      window.localStorage.removeItem("refresh_token");
     }
     navigate("/");
   });

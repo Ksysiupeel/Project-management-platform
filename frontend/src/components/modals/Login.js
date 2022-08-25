@@ -86,7 +86,14 @@ const Login = () => {
           </ModalBody>
 
           <ModalFooter>
-            <Button onClick={handleSubmit} type="submit" colorScheme="blue">
+            <Button
+              onClick={() => {
+                handleSubmit();
+                onClose();
+              }}
+              type="submit"
+              colorScheme="blue"
+            >
               Sign in
             </Button>
           </ModalFooter>

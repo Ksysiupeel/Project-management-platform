@@ -32,7 +32,7 @@ const UserEdit = () => {
 
   const handleSubmit = () => {
     axiosInstance
-      .put("/user/edit/", {
+      .patch("/user/edit/", {
         first_name: first_name,
         last_name: last_name,
         email: email,
@@ -148,7 +148,14 @@ const UserEdit = () => {
           </ModalBody>
 
           <ModalFooter>
-            <Button onClick={handleSubmit} type="submit" colorScheme="red">
+            <Button
+              onClick={() => {
+                handleSubmit();
+                onClose();
+              }}
+              type="submit"
+              colorScheme="red"
+            >
               Change
             </Button>
           </ModalFooter>

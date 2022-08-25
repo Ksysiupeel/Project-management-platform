@@ -123,7 +123,14 @@ const ProjectEdit = ({ p }) => {
           </ModalBody>
 
           <ModalFooter>
-            <Button onClick={handleSubmit} type="submit" colorScheme="red">
+            <Button
+              onClick={() => {
+                handleSubmit();
+                onClose();
+              }}
+              type="submit"
+              colorScheme="red"
+            >
               Change
             </Button>
           </ModalFooter>

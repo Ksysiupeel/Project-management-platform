@@ -6,6 +6,7 @@ import ProjectAdd from "./modals/ProjectAdd";
 import ProjectDetails from "./modals/ProjectDetails";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@chakra-ui/react";
 
 const Projects = () => {
   const [data, setData] = useState(null);
@@ -20,7 +21,7 @@ const Projects = () => {
         setIsloading(false);
       });
     }, 2000);
-  });
+  }, []);
 
   const handleDelete = (id) => {
     axiosInstance.delete(`/user/projects/${id}/`).then(() => {
@@ -32,7 +33,16 @@ const Projects = () => {
     <div className="projects">
       {isloading && <div>Loading....</div>}
       <UserEdit /> <br /> <br />
-      <ProjectAdd />
+      <ProjectAdd /> <br /> <br />
+      <Button
+        colorScheme="whatsapp"
+        size="md"
+        onClick={() => {
+          navigate("/logout");
+        }}
+      >
+        Logout
+      </Button>
       {data && (
         <div className="projects-list">
           {data.map((project) => (
