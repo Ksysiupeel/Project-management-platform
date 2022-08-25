@@ -13,6 +13,9 @@ import {
   ModalFooter,
   Button,
   useDisclosure,
+  Radio,
+  RadioGroup,
+  Stack,
 } from "@chakra-ui/react";
 import { toast } from "react-toastify";
 
@@ -101,13 +104,12 @@ const ProjectEdit = ({ p }) => {
 
                 <br />
                 <Text>Status</Text>
-                <Input
-                  type="text"
-                  value={status}
-                  onChange={(e) => {
-                    setStatus(e.target.value);
-                  }}
-                />
+                <RadioGroup onChange={setStatus} value={status}>
+                  <Stack>
+                    <Radio value="PROG">In Progress</Radio>
+                    <Radio value="CLOS">Closed</Radio>
+                  </Stack>
+                </RadioGroup>
 
                 <br />
                 <Text>Description</Text>

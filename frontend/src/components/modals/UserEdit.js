@@ -20,13 +20,13 @@ import {
 import { toast } from "react-toastify";
 
 const UserEdit = () => {
-  const [first_name, setFirst_Name] = useState("");
-  const [last_name, setLast_Name] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [gender, setGender] = useState("");
-  const [birth_date, setBirth_Date] = useState("");
-  const [phone_number, setPhone_Number] = useState("");
+  const [first_name, setFirst_Name] = useState();
+  const [last_name, setLast_Name] = useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [gender, setGender] = useState();
+  const [birth_date, setBirth_Date] = useState();
+  const [phone_number, setPhone_Number] = useState();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -80,7 +80,7 @@ const UserEdit = () => {
                 <Text>First name</Text>
                 <Input
                   type="text"
-                  value={first_name}
+                  value={first_name || ""}
                   onChange={(e) => {
                     setFirst_Name(e.target.value);
                   }}
@@ -89,7 +89,7 @@ const UserEdit = () => {
                 <Text>Last name</Text>
                 <Input
                   type="text"
-                  value={last_name}
+                  value={last_name || ""}
                   onChange={(e) => {
                     setLast_Name(e.target.value);
                   }}
@@ -99,7 +99,7 @@ const UserEdit = () => {
                 <Text>Email</Text>
                 <Input
                   type="email"
-                  value={email}
+                  value={email || ""}
                   onChange={(e) => {
                     setEmail(e.target.value);
                   }}
@@ -109,7 +109,7 @@ const UserEdit = () => {
                 <Text>Password</Text>
                 <Input
                   type="password"
-                  value={password}
+                  value={password || ""}
                   onChange={(e) => {
                     setPassword(e.target.value);
                   }}
@@ -128,7 +128,7 @@ const UserEdit = () => {
                 <Text>Birth date</Text>
                 <Input
                   type="date"
-                  value={birth_date}
+                  value={birth_date || ""}
                   onChange={(e) => {
                     setBirth_Date(e.target.value);
                   }}
@@ -138,7 +138,7 @@ const UserEdit = () => {
                 <Text>Phone number</Text>
                 <Input
                   type="text"
-                  value={phone_number}
+                  value={phone_number || ""}
                   onChange={(e) => {
                     setPhone_Number(e.target.value);
                   }}
