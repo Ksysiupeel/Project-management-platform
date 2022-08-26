@@ -79,7 +79,7 @@ class ProjectView(APIView):
 
             member_ser.save()
 
-            if request.data.get("user_id", None) != None:
+            if request.data.get("user_id", None) is not None:
 
                 member = ProjectMembersSerializer(
                     data={
