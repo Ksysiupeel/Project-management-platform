@@ -11,6 +11,7 @@ from .serializers import (
     UserListSerializer,
 )
 from .models import User, Project, ProjectMembers, Comment
+from datetime import date
 
 
 class UserCreate(APIView):
@@ -19,6 +20,9 @@ class UserCreate(APIView):
 
     def post(self, request):
         try:
+            if request.data["birth_date"] > str(date.today()):
+                raise ValidationError
+
             ser = UserSerializer(data=request.data)
             ser.is_valid(raise_exception=True)
             ser.save()

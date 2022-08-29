@@ -26,6 +26,7 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [gender, setGender] = useState();
   const [birth_date, setBirth_Date] = useState("");
+  const [phone_number, setPhone_Number] = useState();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -38,6 +39,7 @@ const Register = () => {
         password: password,
         gender: gender,
         birth_date: birth_date,
+        phone_number: phone_number,
       })
       .then(() => {
         toast.success("User was created!", {
@@ -48,6 +50,7 @@ const Register = () => {
           draggable: true,
           progress: undefined,
         });
+        onClose();
       })
       .catch(() => {
         toast.error("Something went wrong!", {
@@ -131,19 +134,22 @@ const Register = () => {
                     setBirth_Date(e.target.value);
                   }}
                 />
+
+                <br />
+                <Text>Phone number (Optional)</Text>
+                <Input
+                  type="text"
+                  value={phone_number}
+                  onChange={(e) => {
+                    setPhone_Number(e.target.value);
+                  }}
+                />
               </FormControl>
             </form>
           </ModalBody>
 
           <ModalFooter>
-            <Button
-              onClick={() => {
-                handleSubmit();
-                onClose();
-              }}
-              type="submit"
-              colorScheme="red"
-            >
+            <Button onClick={handleSubmit} type="submit" colorScheme="red">
               Sign up
             </Button>
           </ModalFooter>

@@ -36,6 +36,7 @@ const CommentAdd = ({ project_id }) => {
           draggable: true,
           progress: undefined,
         });
+        onClose();
       })
       .catch(() => {
         toast.error("Something went wrong!", {
@@ -76,14 +77,7 @@ const CommentAdd = ({ project_id }) => {
           </ModalBody>
 
           <ModalFooter>
-            <Button
-              onClick={() => {
-                handleSubmit();
-                onClose();
-              }}
-              type="submit"
-              colorScheme="red"
-            >
+            <Button onClick={handleSubmit} type="submit" colorScheme="red">
               Add
             </Button>
           </ModalFooter>

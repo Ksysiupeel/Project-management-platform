@@ -48,6 +48,7 @@ const ProjectAdd = () => {
           draggable: true,
           progress: undefined,
         });
+        onClose();
       })
       .catch(() => {
         toast.error("Something went wrong!", {
@@ -134,14 +135,7 @@ const ProjectAdd = () => {
           </ModalBody>
 
           <ModalFooter>
-            <Button
-              onClick={() => {
-                handleSubmit();
-                onClose();
-              }}
-              type="submit"
-              colorScheme="red"
-            >
+            <Button onClick={handleSubmit} type="submit" colorScheme="red">
               Create
             </Button>
           </ModalFooter>
