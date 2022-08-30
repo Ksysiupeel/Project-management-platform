@@ -1,5 +1,5 @@
 import axiosInstance from "../axiosApi";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -19,16 +19,23 @@ const ProjectDetails = ({ id }) => {
   const [iscomment, setIscomment] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  useEffect(() => {
+  const getProjectDetails = () => {
     axiosInstance.get(`/user/comment/get/${id}/`).then((res) => {
       setComment_Data(res.data);
       setIscomment(true);
     });
-  }, []);
+  };
 
   return (
     <>
-      <Button onClick={onOpen}>Details</Button>
+      <Button
+        onClick={() => {
+          onOpen();
+          getProjectDetails();
+        }}
+      >
+        Details
+      </Button>
 
       <Modal onClose={onClose} isOpen={isOpen} isCentered>
         <ModalOverlay />

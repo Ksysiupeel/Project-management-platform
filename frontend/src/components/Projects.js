@@ -15,16 +15,17 @@ const Projects = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setTimeout(() => {
-      axiosInstance.get("/user/projects/").then((res) => {
-        setData(res.data);
-        setIsloading(false);
-      });
-    }, 2000);
+    axiosInstance.get("/user/projects/").then((res) => {
+      setData(res.data);
+      setIsloading(false);
+    });
   }, []);
 
   const handleDelete = (id) => {
     axiosInstance.delete(`/user/projects/${id}/`).then(() => {
+      axiosInstance.get("/user/projects/").then((res) => {
+        setData(res.data);
+      });
       navigate("/projects");
     });
   };
@@ -33,7 +34,7 @@ const Projects = () => {
     <div className="projects">
       {isloading && <div>Loading....</div>}
       <UserEdit /> <br /> <br />
-      <ProjectAdd /> <br /> <br />
+      <ProjectAdd state={setData} /> <br /> <br />
       <Button
         colorScheme="whatsapp"
         size="md"
@@ -52,7 +53,7 @@ const Projects = () => {
               <p>Project end date: {project.end_date}</p>
               <p>Project status: {project.status}</p>
               <p>Project description: {project.description}</p>
-              <ProjectEdit p={project} />
+              <ProjectEdit p={project} state={setData} />
               <CommentAdd project_id={project.id} />
               <ProjectDetails id={project.id} />
               <button

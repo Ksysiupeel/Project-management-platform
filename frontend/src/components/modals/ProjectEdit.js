@@ -19,7 +19,7 @@ import {
 } from "@chakra-ui/react";
 import { toast } from "react-toastify";
 
-const ProjectEdit = ({ p }) => {
+const ProjectEdit = ({ p, state }) => {
   const [name, setName] = useState(p.project_name);
   const [start_date, setStart_Date] = useState(p.start_date);
   const [end_date, setEnd_Date] = useState(p.end_date);
@@ -38,6 +38,10 @@ const ProjectEdit = ({ p }) => {
         description: description,
       })
       .then(() => {
+        axiosInstance.get("/user/projects/").then((res) => {
+          state(res.data);
+        });
+
         toast.success("Project was updated!", {
           position: "top-right",
           autoClose: 2000,
@@ -107,8 +111,8 @@ const ProjectEdit = ({ p }) => {
                 <Text>Status</Text>
                 <RadioGroup onChange={setStatus} value={status}>
                   <Stack>
-                    <Radio value="PROG">In Progress</Radio>
-                    <Radio value="CLOS">Closed</Radio>
+                    <Radio value="In Progress">In Progress</Radio>
+                    <Radio value="Closed">Closed</Radio>
                   </Stack>
                 </RadioGroup>
 

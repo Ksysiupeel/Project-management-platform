@@ -20,7 +20,7 @@ import {
 } from "@chakra-ui/react";
 import { toast } from "react-toastify";
 
-const ProjectAdd = () => {
+const ProjectAdd = ({ state }) => {
   const [name, setName] = useState("");
   const [start_date, setStart_Date] = useState("");
   const [end_date, setEnd_Date] = useState("");
@@ -40,6 +40,10 @@ const ProjectAdd = () => {
         user_id: user_id,
       })
       .then(() => {
+        axiosInstance.get("/user/projects/").then((res) => {
+          state(res.data);
+        });
+
         toast.success("Project was created!", {
           position: "top-right",
           autoClose: 2000,
@@ -48,6 +52,7 @@ const ProjectAdd = () => {
           draggable: true,
           progress: undefined,
         });
+
         onClose();
       })
       .catch(() => {
