@@ -36,6 +36,14 @@ const Login = () => {
           "JWT " + res.data.access;
         window.localStorage.setItem("access_token", res.data.access);
         window.localStorage.setItem("refresh_token", res.data.refresh);
+        toast.success("Logged in!!", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+        });
         navigate("/projects");
       })
       .catch(() => {
@@ -73,7 +81,7 @@ const Login = () => {
                   }}
                 />
 
-                <Text>password</Text>
+                <Text>Password</Text>
                 <Input
                   type="password"
                   value={password}

@@ -4,11 +4,11 @@ from django.contrib.auth.models import AbstractUser
 
 
 class Project(models.Model):
-    project_name = models.CharField(max_length=30)
+    project_name = models.CharField(max_length=60)
     start_date = models.DateField()
     end_date = models.DateField()
     status = models.CharField(max_length=13, default="New")
-    description = models.CharField(max_length=200)
+    description = models.CharField(max_length=600)
 
     def __str__(self):
         return self.project_name

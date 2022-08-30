@@ -6,7 +6,6 @@ import ProjectAdd from "./modals/ProjectAdd";
 import ProjectDetails from "./modals/ProjectDetails";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@chakra-ui/react";
 
 const Projects = () => {
   const [data, setData] = useState(null);
@@ -34,16 +33,7 @@ const Projects = () => {
     <div className="projects">
       {isloading && <div>Loading....</div>}
       <UserEdit /> <br /> <br />
-      <ProjectAdd state={setData} /> <br /> <br />
-      <Button
-        colorScheme="whatsapp"
-        size="md"
-        onClick={() => {
-          navigate("/logout");
-        }}
-      >
-        Logout
-      </Button>
+      <ProjectAdd state={setData} />
       {data && (
         <div className="projects-list">
           {data.map((project) => (

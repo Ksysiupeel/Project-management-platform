@@ -1,5 +1,4 @@
 import axiosInstance from "../axiosApi";
-import useUserList from "../useUserList";
 import { useState } from "react";
 import {
   Modal,
@@ -26,9 +25,9 @@ const ProjectAdd = ({ state }) => {
   const [end_date, setEnd_Date] = useState("");
   const [description, setDescription] = useState("");
   const [user_id, setUser_id] = useState(null);
+  const [data, setData] = useState([]);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { data } = useUserList();
 
   const handleSubmit = () => {
     axiosInstance
@@ -67,9 +66,22 @@ const ProjectAdd = ({ state }) => {
       });
   };
 
+  const UserList = () => {
+    axiosInstance.get("/users/").then((r) => {
+      setData(r.data);
+    });
+  };
+
   return (
     <>
-      <Button colorScheme="whatsapp" onClick={onOpen} size="md">
+      <Button
+        colorScheme="whatsapp"
+        onClick={() => {
+          onOpen();
+          UserList();
+        }}
+        size="md"
+      >
         Create a new project
       </Button>
 

@@ -1,5 +1,4 @@
 import NotFound from "./NotFound";
-import Logout from "./Logout";
 import Projects from "./Projects";
 import HomePage from "./Home";
 import Navbar from "./Navbar";
@@ -19,7 +18,6 @@ const App = () => {
             <Routes>
               <Route exact path="/" element={<HomePage />} />
               <Route path="/projects" element={<Projects />} />
-              <Route path="/logout" element={<Logout />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>

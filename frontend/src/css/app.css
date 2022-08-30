@@ -22,6 +22,18 @@
   color: #2AABEE;
 }
 
+.navbar .buttons {
+  margin-left: auto;
+}
+.navbar button {
+  margin-left: 16px;
+  text-decoration: none;
+  color: white;
+  background-color: #2AABEE;
+  padding: 8px;
+  border-radius: 6px;
+}
+
 /* content */
 .content {
     max-width: 600px;
