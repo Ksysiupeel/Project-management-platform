@@ -4,6 +4,7 @@ import ProjectEdit from "./modals/ProjectEdit";
 import CommentAdd from "./modals/CommentAdd";
 import ProjectAdd from "./modals/ProjectAdd";
 import ProjectDetails from "./modals/ProjectDetails";
+import User from "./modals/User";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -32,6 +33,7 @@ const Projects = () => {
   return (
     <div className="projects">
       {isloading && <div>Loading....</div>}
+      <User /> <br /> <br />
       <UserEdit /> <br /> <br />
       <ProjectAdd state={setData} />
       {data && (
