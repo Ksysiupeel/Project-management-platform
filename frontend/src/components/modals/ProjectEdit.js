@@ -26,6 +26,9 @@ const ProjectEdit = ({ p, state }) => {
   const [status, setStatus] = useState(p.status);
   const [description, setDescription] = useState(p.description);
 
+  const [user_id, setUser_id] = useState(null);
+  const [data, setData] = useState([]);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleSubmit = () => {
@@ -36,6 +39,7 @@ const ProjectEdit = ({ p, state }) => {
         end_date: end_date,
         status: status,
         description: description,
+        user_id: user_id,
       })
       .then(() => {
         axiosInstance.get("/user/projects/").then((res) => {
@@ -64,9 +68,20 @@ const ProjectEdit = ({ p, state }) => {
       });
   };
 
+  const UserList = () => {
+    axiosInstance.get("/users/").then((r) => {
+      setData(r.data);
+    });
+  };
+
   return (
     <>
-      <Button onClick={onOpen} size="m">
+      <Button
+        onClick={() => {
+          onOpen();
+          UserList();
+        }}
+      >
         Change
       </Button>
 
@@ -129,6 +144,23 @@ const ProjectEdit = ({ p, state }) => {
                     setDescription(e.target.value);
                   }}
                 />
+              </FormControl>
+
+              <FormControl>
+                {data.length && (
+                  <>
+                    <FormLabel>Add user to the project</FormLabel>
+                    <RadioGroup onChange={setUser_id} value={user_id}>
+                      <Stack>
+                        {data.map((user) => (
+                          <Radio key={user.id} value={user.id}>
+                            {user.first_name} {user.last_name}
+                          </Radio>
+                        ))}
+                      </Stack>
+                    </RadioGroup>
+                  </>
+                )}
               </FormControl>
             </form>
           </ModalBody>

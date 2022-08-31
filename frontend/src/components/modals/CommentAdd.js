@@ -52,9 +52,7 @@ const CommentAdd = ({ project_id }) => {
 
   return (
     <>
-      <Button onClick={onOpen} size="m">
-        Add comment
-      </Button>
+      <Button onClick={onOpen}>Add comment</Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />

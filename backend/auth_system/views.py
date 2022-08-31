@@ -24,6 +24,18 @@ class UserCreate(APIView):
             if len(request.data) < 6:
                 raise ValidationError("You must provide all required fields")
 
+            if (
+                re.search(
+                    r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b",
+                    request.data["email"],
+                )
+                is None
+            ):
+                raise ValidationError("Wrong email format")
+
+            if User.objects.filter(email=request.data["email"]):
+                raise ValidationError("Given e-mail is already in use")
+
             if re.search(r"^[a-zA-Z]{2,20}$", request.data["first_name"]) is None:
                 raise ValidationError("Invalid  first name format")
 
@@ -59,6 +71,16 @@ class UserView(APIView):
                 raise ValidationError(
                     "To update the data, you must provide at least one value"
                 )
+
+            if request.data.get("email", None) is not None:
+                if (
+                    re.search(
+                        r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b",
+                        request.data["email"],
+                    )
+                    is None
+                ):
+                    raise ValidationError("Wrong email format")
 
             if request.data.get("first_name", None) is not None:
                 if re.search(r"^[a-zA-Z]{2,20}$", request.data["first_name"]) is None:
