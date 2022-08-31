@@ -9,11 +9,11 @@ import {
   ModalCloseButton,
   ModalBody,
   FormControl,
-  Text,
   Input,
   ModalFooter,
   Button,
   useDisclosure,
+  FormLabel,
 } from "@chakra-ui/react";
 import { toast } from "react-toastify";
 
@@ -47,7 +47,7 @@ const Login = () => {
         navigate("/projects");
       })
       .catch(() => {
-        toast.error("Something went wrong", {
+        toast.error("Wrong email or password", {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: false,
@@ -71,8 +71,8 @@ const Login = () => {
           <ModalCloseButton />
           <ModalBody>
             <form>
-              <FormControl>
-                <Text>Email</Text>
+              <FormControl isRequired>
+                <FormLabel>Email</FormLabel>
                 <Input
                   type="email"
                   value={email}
@@ -80,8 +80,10 @@ const Login = () => {
                     setEmail(e.target.value);
                   }}
                 />
+              </FormControl>
 
-                <Text>Password</Text>
+              <FormControl isRequired>
+                <FormLabel>Password</FormLabel>
                 <Input
                   type="password"
                   value={password}

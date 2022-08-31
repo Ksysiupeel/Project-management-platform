@@ -15,10 +15,14 @@ const Projects = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axiosInstance.get("/user/projects/").then((res) => {
-      setData(res.data);
-      setIsloading(false);
-    });
+    if (!window.localStorage.getItem("access_token")) {
+      navigate("/");
+    } else {
+      axiosInstance.get("/user/projects/").then((res) => {
+        setData(res.data);
+        setIsloading(false);
+      });
+    }
   }, []);
 
   const handleDelete = (id) => {

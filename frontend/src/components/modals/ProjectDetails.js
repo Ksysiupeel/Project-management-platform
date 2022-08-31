@@ -44,12 +44,15 @@ const ProjectDetails = ({ id }) => {
           <ModalCloseButton />
           <ModalBody>
             <Stack>
-              {iscomment &&
+              {iscomment ? (
                 comment_data.map((comment) => (
                   <Text key={comment.id}>
                     {comment.date_added} | {comment.description}
                   </Text>
-                ))}
+                ))
+              ) : (
+                <Text>No comment yet</Text>
+              )}
             </Stack>
           </ModalBody>
           <ModalFooter>

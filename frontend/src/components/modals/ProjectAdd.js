@@ -8,7 +8,6 @@ import {
   ModalCloseButton,
   ModalBody,
   FormControl,
-  Text,
   Input,
   ModalFooter,
   Button,
@@ -16,14 +15,15 @@ import {
   Radio,
   RadioGroup,
   Stack,
+  FormLabel,
 } from "@chakra-ui/react";
 import { toast } from "react-toastify";
 
 const ProjectAdd = ({ state }) => {
-  const [name, setName] = useState("");
-  const [start_date, setStart_Date] = useState("");
-  const [end_date, setEnd_Date] = useState("");
-  const [description, setDescription] = useState("");
+  const [name, setName] = useState();
+  const [start_date, setStart_Date] = useState();
+  const [end_date, setEnd_Date] = useState();
+  const [description, setDescription] = useState();
   const [user_id, setUser_id] = useState(null);
   const [data, setData] = useState([]);
 
@@ -54,8 +54,8 @@ const ProjectAdd = ({ state }) => {
 
         onClose();
       })
-      .catch(() => {
-        toast.error("Something went wrong!", {
+      .catch((error) => {
+        toast.error(error.response.data.msg, {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: false,
@@ -92,50 +92,54 @@ const ProjectAdd = ({ state }) => {
           <ModalCloseButton />
           <ModalBody>
             <form>
-              <FormControl>
-                <Text>Project name</Text>
+              <FormControl isRequired>
+                <FormLabel>Project name</FormLabel>
                 <Input
                   type="text"
-                  value={name}
+                  value={name || ""}
                   onChange={(e) => {
                     setName(e.target.value);
                   }}
                 />
+              </FormControl>
 
-                <br />
-                <Text>Start date</Text>
+              <FormControl isRequired>
+                <FormLabel>Start date</FormLabel>
                 <Input
                   type="date"
-                  value={start_date}
+                  value={start_date || ""}
                   onChange={(e) => {
                     setStart_Date(e.target.value);
                   }}
                 />
+              </FormControl>
 
-                <br />
-                <Text>End date</Text>
+              <FormControl isRequired>
+                <FormLabel>End date</FormLabel>
                 <Input
                   type="date"
-                  value={end_date}
+                  value={end_date || ""}
                   onChange={(e) => {
                     setEnd_Date(e.target.value);
                   }}
                 />
+              </FormControl>
 
-                <br />
-                <Text>Description</Text>
+              <FormControl isRequired>
+                <FormLabel>Description</FormLabel>
                 <Input
                   type="text"
-                  value={description}
+                  value={description || ""}
                   onChange={(e) => {
                     setDescription(e.target.value);
                   }}
                 />
+              </FormControl>
 
-                <br />
+              <FormControl>
                 {data.length && (
                   <>
-                    <Text>Add user to the project</Text>
+                    <FormLabel>Add user to the project</FormLabel>
                     <RadioGroup onChange={setUser_id} value={user_id}>
                       <Stack>
                         {data.map((user) => (

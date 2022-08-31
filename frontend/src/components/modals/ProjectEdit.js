@@ -8,7 +8,6 @@ import {
   ModalCloseButton,
   ModalBody,
   FormControl,
-  Text,
   Input,
   ModalFooter,
   Button,
@@ -16,6 +15,7 @@ import {
   Radio,
   RadioGroup,
   Stack,
+  FormLabel,
 } from "@chakra-ui/react";
 import { toast } from "react-toastify";
 
@@ -52,8 +52,8 @@ const ProjectEdit = ({ p, state }) => {
         });
         onClose();
       })
-      .catch(() => {
-        toast.error("Something went wrong!", {
+      .catch((error) => {
+        toast.error(error.response.data.msg, {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: false,
@@ -78,7 +78,7 @@ const ProjectEdit = ({ p, state }) => {
           <ModalBody>
             <form>
               <FormControl>
-                <Text>Project name</Text>
+                <FormLabel>Project name</FormLabel>
                 <Input
                   type="text"
                   value={name}
@@ -86,9 +86,10 @@ const ProjectEdit = ({ p, state }) => {
                     setName(e.target.value);
                   }}
                 />
+              </FormControl>
 
-                <br />
-                <Text>Start date</Text>
+              <FormControl>
+                <FormLabel>Start date</FormLabel>
                 <Input
                   type="date"
                   value={start_date}
@@ -96,9 +97,10 @@ const ProjectEdit = ({ p, state }) => {
                     setStart_Date(e.target.value);
                   }}
                 />
+              </FormControl>
 
-                <br />
-                <Text>End date</Text>
+              <FormControl>
+                <FormLabel>End date</FormLabel>
                 <Input
                   type="date"
                   value={end_date}
@@ -106,18 +108,20 @@ const ProjectEdit = ({ p, state }) => {
                     setEnd_Date(e.target.value);
                   }}
                 />
+              </FormControl>
 
-                <br />
-                <Text>Status</Text>
+              <FormControl>
+                <FormLabel>Status</FormLabel>
                 <RadioGroup onChange={setStatus} value={status}>
                   <Stack>
                     <Radio value="In Progress">In Progress</Radio>
                     <Radio value="Closed">Closed</Radio>
                   </Stack>
                 </RadioGroup>
+              </FormControl>
 
-                <br />
-                <Text>Description</Text>
+              <FormControl>
+                <FormLabel>Description</FormLabel>
                 <Input
                   type="text"
                   value={description}

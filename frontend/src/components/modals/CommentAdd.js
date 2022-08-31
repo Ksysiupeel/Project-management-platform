@@ -8,16 +8,16 @@ import {
   ModalCloseButton,
   ModalBody,
   FormControl,
-  Text,
   Input,
   ModalFooter,
   Button,
   useDisclosure,
+  FormLabel,
 } from "@chakra-ui/react";
 import { toast } from "react-toastify";
 
 const CommentAdd = ({ project_id }) => {
-  const [description, setDescription] = useState("");
+  const [description, setDescription] = useState();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -38,8 +38,8 @@ const CommentAdd = ({ project_id }) => {
         });
         onClose();
       })
-      .catch(() => {
-        toast.error("Something went wrong!", {
+      .catch((error) => {
+        toast.error(error.response.data.msg, {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: false,
@@ -63,11 +63,11 @@ const CommentAdd = ({ project_id }) => {
           <ModalCloseButton />
           <ModalBody>
             <form>
-              <FormControl>
-                <Text>Description</Text>
+              <FormControl isRequired>
+                <FormLabel>Description</FormLabel>
                 <Input
                   type="text"
-                  value={description}
+                  value={description || ""}
                   onChange={(e) => {
                     setDescription(e.target.value);
                   }}

@@ -8,7 +8,6 @@ import {
   ModalCloseButton,
   ModalBody,
   FormControl,
-  Text,
   Input,
   ModalFooter,
   Button,
@@ -16,6 +15,7 @@ import {
   RadioGroup,
   useDisclosure,
   Stack,
+  FormLabel,
 } from "@chakra-ui/react";
 import { toast } from "react-toastify";
 
@@ -52,8 +52,8 @@ const UserEdit = () => {
         });
         onClose();
       })
-      .catch(() => {
-        toast.error("Something went wrong!", {
+      .catch((error) => {
+        toast.error(error.response.data.msg, {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: false,
@@ -78,7 +78,7 @@ const UserEdit = () => {
           <ModalBody>
             <form>
               <FormControl>
-                <Text>First name</Text>
+                <FormLabel>First name</FormLabel>
                 <Input
                   type="text"
                   value={first_name || ""}
@@ -86,8 +86,10 @@ const UserEdit = () => {
                     setFirst_Name(e.target.value);
                   }}
                 />
-                <br />
-                <Text>Last name</Text>
+              </FormControl>
+
+              <FormControl>
+                <FormLabel>Last name</FormLabel>
                 <Input
                   type="text"
                   value={last_name || ""}
@@ -95,9 +97,10 @@ const UserEdit = () => {
                     setLast_Name(e.target.value);
                   }}
                 />
+              </FormControl>
 
-                <br />
-                <Text>Email</Text>
+              <FormControl>
+                <FormLabel>Email</FormLabel>
                 <Input
                   type="email"
                   value={email || ""}
@@ -105,9 +108,10 @@ const UserEdit = () => {
                     setEmail(e.target.value);
                   }}
                 />
+              </FormControl>
 
-                <br />
-                <Text>Password</Text>
+              <FormControl>
+                <FormLabel>Password</FormLabel>
                 <Input
                   type="password"
                   value={password || ""}
@@ -115,18 +119,20 @@ const UserEdit = () => {
                     setPassword(e.target.value);
                   }}
                 />
+              </FormControl>
 
-                <br />
-                <Text>Gender</Text>
+              <FormControl>
+                <FormLabel>Gender</FormLabel>
                 <RadioGroup onChange={setGender} value={gender}>
                   <Stack>
                     <Radio value="Man">Man</Radio>
                     <Radio value="Woman">Woman</Radio>
                   </Stack>
                 </RadioGroup>
+              </FormControl>
 
-                <br />
-                <Text>Birth date</Text>
+              <FormControl>
+                <FormLabel>Birth date</FormLabel>
                 <Input
                   type="date"
                   value={birth_date || ""}
@@ -134,9 +140,10 @@ const UserEdit = () => {
                     setBirth_Date(e.target.value);
                   }}
                 />
+              </FormControl>
 
-                <br />
-                <Text>Phone number</Text>
+              <FormControl>
+                <FormLabel>Phone number</FormLabel>
                 <Input
                   type="text"
                   value={phone_number || ""}
