@@ -160,16 +160,17 @@ class ProjectView(APIView):
 
             member_serializer.save()
 
-            if request.data.get("user_id", None) is not None:
+            if request.data["users_id"]:
 
-                member = ProjectMembersSerializer(
-                    data={
-                        "user_id": request.data["user_id"],
-                        "project_id": serializer.data["id"],
-                    }
-                )
-                member.is_valid(raise_exception=True)
-                member.save()
+                for id in request.data["users_id"]:
+                    members_serializer = ProjectMembersSerializer(
+                        data={
+                            "user_id": id,
+                            "project_id": serializer.data["id"],
+                        }
+                    )
+                    members_serializer.is_valid(raise_exception=True)
+                    members_serializer.save()
 
             return Response(
                 data={"msg": "Project added"}, status=status.HTTP_201_CREATED
@@ -199,11 +200,17 @@ class ProjectView(APIView):
             serializer.is_valid(raise_exception=True)
             serializer.save()
 
-            member_serializer = ProjectMembersSerializer(
-                data={"user_id": request.user.id, "project_id": serializer.data["id"]}
-            )
+            if request.data["users_id"]:
 
-            member_serializer.is_valid(raise_exception=True)
+                for id in request.data["users_id"]:
+                    members_serializer = ProjectMembersSerializer(
+                        data={
+                            "user_id": id,
+                            "project_id": serializer.data["id"],
+                        }
+                    )
+                    members_serializer.is_valid(raise_exception=True)
+                    members_serializer.save()
 
             return Response(data={"msg": "Project updated"}, status=status.HTTP_200_OK)
 

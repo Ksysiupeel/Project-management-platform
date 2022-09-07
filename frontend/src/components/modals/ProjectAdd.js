@@ -12,19 +12,17 @@ import {
   ModalFooter,
   Button,
   useDisclosure,
-  Radio,
-  RadioGroup,
-  Stack,
   FormLabel,
 } from "@chakra-ui/react";
 import { toast } from "react-toastify";
+import Select from "react-select";
 
 const ProjectAdd = ({ state }) => {
   const [name, setName] = useState();
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
   const [description, setDescription] = useState();
-  const [userId, setUserId] = useState(null);
+  const [usersId, setUsersId] = useState([]);
   const [data, setData] = useState([]);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -36,7 +34,7 @@ const ProjectAdd = ({ state }) => {
         start_date: startDate,
         end_date: endDate,
         description: description,
-        user_id: userId,
+        users_id: usersId.map((id) => id.value),
       })
       .then(() => {
         axiosInstance.get("/user/projects/").then((res) => {
@@ -139,16 +137,22 @@ const ProjectAdd = ({ state }) => {
               <FormControl>
                 {data.length && (
                   <>
-                    <FormLabel>Add user to the project</FormLabel>
-                    <RadioGroup onChange={setUserId} value={userId}>
-                      <Stack>
-                        {data.map((user) => (
-                          <Radio key={user.id} value={user.id}>
+                    <FormLabel>Add users to the project</FormLabel>
+                    <Select
+                      closeMenuOnSelect={false}
+                      onChange={setUsersId}
+                      isMulti
+                      isSearchable={true}
+                      placeholder="Select users..."
+                      options={data.map((user) => ({
+                        value: user.id,
+                        label: (
+                          <>
                             {user.first_name} {user.last_name}
-                          </Radio>
-                        ))}
-                      </Stack>
-                    </RadioGroup>
+                          </>
+                        ),
+                      }))}
+                    />
                   </>
                 )}
               </FormControl>
