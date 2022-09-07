@@ -18,8 +18,11 @@ import {
   FormLabel,
 } from "@chakra-ui/react";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate();
+
   const [firstName, setFirstName] = useState();
   const [lastName, setLastName] = useState();
   const [email, setEmail] = useState();
@@ -50,7 +53,20 @@ const Register = () => {
           draggable: true,
           progress: undefined,
         });
+
         onClose();
+
+        axios
+          .post("http://127.0.0.1:8000/api/token/obtain/", {
+            email: email,
+            password: password,
+          })
+          .then((res) => {
+            axios.defaults.headers["Authorization"] = "JWT " + res.data.access;
+            window.localStorage.setItem("access_token", res.data.access);
+            window.localStorage.setItem("refresh_token", res.data.refresh);
+            navigate("/projects");
+          });
       })
       .catch((error) => {
         toast.error(error.response.data.msg, {
