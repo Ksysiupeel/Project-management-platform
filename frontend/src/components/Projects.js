@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 const Projects = () => {
   const [data, setData] = useState(null);
-  const [isloading, setIsloading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   const navigate = useNavigate();
 
@@ -20,7 +20,7 @@ const Projects = () => {
     } else {
       axiosInstance.get("/user/projects/").then((res) => {
         setData(res.data);
-        setIsloading(false);
+        setIsLoading(false);
       });
     }
   }, []);
@@ -36,7 +36,7 @@ const Projects = () => {
 
   return (
     <div className="projects">
-      {isloading && <div>Loading....</div>}
+      {isLoading && <div>Loading....</div>}
       <User /> <br /> <br />
       <UserEdit /> <br /> <br />
       <ProjectAdd state={setData} />
@@ -49,9 +49,9 @@ const Projects = () => {
               <p>Project end date: {project.end_date}</p>
               <p>Project status: {project.status}</p>
               <p>Project description: {project.description}</p>
-              <ProjectEdit p={project} state={setData} />
+              <ProjectEdit project={project} state={setData} />
               <CommentAdd project_id={project.id} />
-              <ProjectDetails id={project.id} />
+              <ProjectDetails project_id={project.id} />
               <button
                 onClick={() => {
                   handleDelete(project.id);

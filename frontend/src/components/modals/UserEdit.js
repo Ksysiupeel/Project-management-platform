@@ -20,26 +20,26 @@ import {
 import { toast } from "react-toastify";
 
 const UserEdit = () => {
-  const [first_name, setFirst_Name] = useState();
-  const [last_name, setLast_Name] = useState();
+  const [firstName, setFirstName] = useState();
+  const [lastName, setLastName] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [gender, setGender] = useState();
-  const [birth_date, setBirth_Date] = useState();
-  const [phone_number, setPhone_Number] = useState();
+  const [birthDate, setBirthDate] = useState();
+  const [phoneNumber, setPhoneNumber] = useState();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleSubmit = () => {
     axiosInstance
       .patch("/user/edit/", {
-        first_name: first_name,
-        last_name: last_name,
+        first_name: firstName,
+        last_name: lastName,
         email: email,
         password: password,
         gender: gender,
-        birth_date: birth_date,
-        phone_number: phone_number,
+        birth_date: birthDate,
+        phone_number: phoneNumber,
       })
       .then(() => {
         toast.success("User was updated!", {
@@ -81,9 +81,9 @@ const UserEdit = () => {
                 <FormLabel>First name</FormLabel>
                 <Input
                   type="text"
-                  value={first_name || ""}
+                  value={firstName || ""}
                   onChange={(e) => {
-                    setFirst_Name(e.target.value);
+                    setFirstName(e.target.value);
                   }}
                 />
               </FormControl>
@@ -92,9 +92,9 @@ const UserEdit = () => {
                 <FormLabel>Last name</FormLabel>
                 <Input
                   type="text"
-                  value={last_name || ""}
+                  value={lastName || ""}
                   onChange={(e) => {
-                    setLast_Name(e.target.value);
+                    setLastName(e.target.value);
                   }}
                 />
               </FormControl>
@@ -125,8 +125,8 @@ const UserEdit = () => {
                 <FormLabel>Gender</FormLabel>
                 <RadioGroup onChange={setGender} value={gender}>
                   <Stack>
-                    <Radio value="Man">Man</Radio>
-                    <Radio value="Woman">Woman</Radio>
+                    <Radio value="Male">Male</Radio>
+                    <Radio value="Female">Female</Radio>
                   </Stack>
                 </RadioGroup>
               </FormControl>
@@ -135,9 +135,9 @@ const UserEdit = () => {
                 <FormLabel>Birth date</FormLabel>
                 <Input
                   type="date"
-                  value={birth_date || ""}
+                  value={birthDate || ""}
                   onChange={(e) => {
-                    setBirth_Date(e.target.value);
+                    setBirthDate(e.target.value);
                   }}
                 />
               </FormControl>
@@ -146,9 +146,9 @@ const UserEdit = () => {
                 <FormLabel>Phone number</FormLabel>
                 <Input
                   type="text"
-                  value={phone_number || ""}
+                  value={phoneNumber || ""}
                   onChange={(e) => {
-                    setPhone_Number(e.target.value);
+                    setPhoneNumber(e.target.value);
                   }}
                 />
               </FormControl>

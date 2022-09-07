@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
-from rest_framework.exceptions import ParseError, ValidationError
+from rest_framework.exceptions import ValidationError
 from .serializers import (
     UserSerializer,
     ProjectSerializer,
@@ -49,21 +49,32 @@ class UserCreate(APIView):
                 if re.search(r"^([0-9]{9})$", request.data.get("phone_number")) is None:
                     raise ValidationError("Wrong phone number format!")
 
-            ser = UserSerializer(data=request.data)
-            ser.is_valid(raise_exception=True)
-            ser.save()
+            serializer = UserSerializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
             return Response(
                 data={"msg": "User created!"}, status=status.HTTP_201_CREATED
             )
-        except (ParseError, ValidationError) as e:
+        except (ValidationError) as e:
             return Response(data={"msg": e.args[0]}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserView(APIView):
     def get(self, request):
-        user = User.objects.filter(id=request.user.id).first()
-        ser = UserSerializer(user)
-        return Response(data=ser.data, status=status.HTTP_200_OK)
+        user = (
+            User.objects.filter(id=request.user.id)
+            .values(
+                "id",
+                "first_name",
+                "last_name",
+                "email",
+                "gender",
+                "birth_date",
+                "phone_number",
+            )
+            .first()
+        )
+        return Response(data=user, status=status.HTTP_200_OK)
 
     def patch(self, request):
         try:
@@ -103,11 +114,11 @@ class UserView(APIView):
                         raise ValidationError("Wrong phone number format!")
 
             user = User.objects.filter(id=request.user.id).first()
-            ser = UserSerializer(user, data=request.data, partial=True)
-            ser.is_valid(raise_exception=True)
-            ser.save()
+            serializer = UserSerializer(user, data=request.data, partial=True)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
             return Response(data={"msg": "Updated"}, status=status.HTTP_200_OK)
-        except (ParseError, ValidationError) as e:
+        except (ValidationError) as e:
             return Response(data={"msg": e.args[0]}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -128,7 +139,7 @@ class ProjectView(APIView):
                     "the project start date can't be greater than the project end date"
                 )
 
-            ser = ProjectSerializer(
+            serializer = ProjectSerializer(
                 data={
                     "project_name": request.data["project_name"],
                     "start_date": request.data["start_date"],
@@ -137,24 +148,24 @@ class ProjectView(APIView):
                 }
             )
 
-            ser.is_valid(raise_exception=True)
+            serializer.is_valid(raise_exception=True)
 
-            ser.save()
+            serializer.save()
 
-            member_ser = ProjectMembersSerializer(
-                data={"user_id": request.user.id, "project_id": ser.data["id"]}
+            member_serializer = ProjectMembersSerializer(
+                data={"user_id": request.user.id, "project_id": serializer.data["id"]}
             )
 
-            member_ser.is_valid(raise_exception=True)
+            member_serializer.is_valid(raise_exception=True)
 
-            member_ser.save()
+            member_serializer.save()
 
             if request.data.get("user_id", None) is not None:
 
                 member = ProjectMembersSerializer(
                     data={
                         "user_id": request.data["user_id"],
-                        "project_id": ser.data["id"],
+                        "project_id": serializer.data["id"],
                     }
                 )
                 member.is_valid(raise_exception=True)
@@ -164,7 +175,7 @@ class ProjectView(APIView):
                 data={"msg": "Project added"}, status=status.HTTP_201_CREATED
             )
 
-        except (ParseError, ValidationError) as e:
+        except (ValidationError) as e:
             return Response(data={"msg": e.args[0]}, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, pk, format=None):
@@ -177,19 +188,19 @@ class ProjectView(APIView):
 
             project = Project.objects.filter(id=pk).first()
 
-            ser = ProjectSerializer(project, data=request.data)
-            ser.is_valid(raise_exception=True)
-            ser.save()
+            serializer = ProjectSerializer(project, data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
 
-            member_ser = ProjectMembersSerializer(
-                data={"user_id": request.user.id, "project_id": ser.data["id"]}
+            member_serializer = ProjectMembersSerializer(
+                data={"user_id": request.user.id, "project_id": serializer.data["id"]}
             )
 
-            member_ser.is_valid(raise_exception=True)
+            member_serializer.is_valid(raise_exception=True)
 
             return Response(data={"msg": "Project updated"}, status=status.HTTP_200_OK)
 
-        except (ParseError, ValidationError) as e:
+        except (ValidationError) as e:
             return Response(data={"msg": e.args[0]}, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk, format=None):
@@ -210,7 +221,7 @@ class CommentView(APIView):
             if request.data.get("description", None) is None:
                 raise ValidationError("You must provide all required fields")
 
-            ser = CommentSerializer(
+            serializer = CommentSerializer(
                 data={
                     "user_id": request.user.id,
                     "project_id": request.data["project_id"],
@@ -218,20 +229,20 @@ class CommentView(APIView):
                 }
             )
 
-            ser.is_valid(raise_exception=True)
+            serializer.is_valid(raise_exception=True)
 
-            ser.save()
+            serializer.save()
 
             return Response(
                 data={"msg": "Comment added"}, status=status.HTTP_201_CREATED
             )
 
-        except (ParseError, ValidationError) as e:
+        except (ValidationError) as e:
             return Response(data={"msg": e.args[0]}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserListView(APIView):
     def get(self, request):
         users = User.objects.exclude(id=request.user.id)
-        ser = UserListSerializer(users, many=True)
-        return Response(data=ser.data, status=status.HTTP_200_OK)
+        serializer = UserListSerializer(users, many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)

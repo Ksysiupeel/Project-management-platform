@@ -14,15 +14,13 @@ import {
   Stack,
 } from "@chakra-ui/react";
 
-const ProjectDetails = ({ id }) => {
-  const [comment_data, setComment_Data] = useState(null);
-  const [iscomment, setIscomment] = useState(false);
+const ProjectDetails = ({ project_id }) => {
+  const [commentData, setCommentData] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const getProjectDetails = () => {
-    axiosInstance.get(`/user/comment/get/${id}/`).then((res) => {
-      setComment_Data(res.data);
-      setIscomment(true);
+    axiosInstance.get(`/user/comment/get/${project_id}/`).then((res) => {
+      setCommentData(res.data);
     });
   };
 
@@ -44,14 +42,14 @@ const ProjectDetails = ({ id }) => {
           <ModalCloseButton />
           <ModalBody>
             <Stack>
-              {iscomment ? (
-                comment_data.map((comment) => (
+              {commentData.length ? (
+                commentData.map((comment) => (
                   <Text key={comment.id}>
                     {comment.date_added} | {comment.description}
                   </Text>
                 ))
               ) : (
-                <Text>No comment yet</Text>
+                <Text>No comments yet</Text>
               )}
             </Stack>
           </ModalBody>

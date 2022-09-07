@@ -21,7 +21,7 @@ class User(AbstractUser):
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=100)
     gender = models.CharField(
-        max_length=9, choices=[("Man", "Male"), ("Woman", "Female")]
+        max_length=9, choices=[("Male", "Male"), ("Female", "Female")]
     )
     birth_date = models.DateField()
     phone_number = models.CharField(max_length=9, blank=True)

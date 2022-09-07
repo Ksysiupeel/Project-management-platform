@@ -15,13 +15,13 @@ import {
 } from "@chakra-ui/react";
 
 const User = () => {
-  const [user_data, setUser_Data] = useState([]);
+  const [userData, setUserData] = useState([]);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleSubmit = () => {
     axiosInstance.get("/user/").then((res) => {
-      setUser_Data(res.data);
+      setUserData(res.data);
     });
   };
 
@@ -44,12 +44,12 @@ const User = () => {
           <ModalCloseButton />
           <ModalBody>
             <Stack spacing={3}>
-              <Text>First name: {user_data.first_name}</Text>
-              <Text>Last name: {user_data.last_name}</Text>
-              <Text>Email: {user_data.email}</Text>
-              <Text>Gender: {user_data.gender}</Text>
-              <Text>Birth date: {user_data.birth_date}</Text>
-              <Text>Phone number: {user_data.phone_number}</Text>
+              <Text>First name: {userData.first_name}</Text>
+              <Text>Last name: {userData.last_name}</Text>
+              <Text>Email: {userData.email}</Text>
+              <Text>Gender: {userData.gender}</Text>
+              <Text>Birth date: {userData.birth_date}</Text>
+              <Text>Phone number: {userData.phone_number}</Text>
             </Stack>
           </ModalBody>
           <ModalFooter>

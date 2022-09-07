@@ -21,10 +21,10 @@ import { toast } from "react-toastify";
 
 const ProjectAdd = ({ state }) => {
   const [name, setName] = useState();
-  const [start_date, setStart_Date] = useState();
-  const [end_date, setEnd_Date] = useState();
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
   const [description, setDescription] = useState();
-  const [user_id, setUser_id] = useState(null);
+  const [userId, setUserId] = useState(null);
   const [data, setData] = useState([]);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -33,10 +33,10 @@ const ProjectAdd = ({ state }) => {
     axiosInstance
       .post("/user/projects/", {
         project_name: name,
-        start_date: start_date,
-        end_date: end_date,
+        start_date: startDate,
+        end_date: endDate,
         description: description,
-        user_id: user_id,
+        user_id: userId,
       })
       .then(() => {
         axiosInstance.get("/user/projects/").then((res) => {
@@ -107,9 +107,9 @@ const ProjectAdd = ({ state }) => {
                 <FormLabel>Start date</FormLabel>
                 <Input
                   type="date"
-                  value={start_date || ""}
+                  value={startDate || ""}
                   onChange={(e) => {
-                    setStart_Date(e.target.value);
+                    setStartDate(e.target.value);
                   }}
                 />
               </FormControl>
@@ -118,9 +118,9 @@ const ProjectAdd = ({ state }) => {
                 <FormLabel>End date</FormLabel>
                 <Input
                   type="date"
-                  value={end_date || ""}
+                  value={endDate || ""}
                   onChange={(e) => {
-                    setEnd_Date(e.target.value);
+                    setEndDate(e.target.value);
                   }}
                 />
               </FormControl>
@@ -140,7 +140,7 @@ const ProjectAdd = ({ state }) => {
                 {data.length && (
                   <>
                     <FormLabel>Add user to the project</FormLabel>
-                    <RadioGroup onChange={setUser_id} value={user_id}>
+                    <RadioGroup onChange={setUserId} value={userId}>
                       <Stack>
                         {data.map((user) => (
                           <Radio key={user.id} value={user.id}>

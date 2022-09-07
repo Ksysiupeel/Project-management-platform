@@ -19,27 +19,27 @@ import {
 } from "@chakra-ui/react";
 import { toast } from "react-toastify";
 
-const ProjectEdit = ({ p, state }) => {
-  const [name, setName] = useState(p.project_name);
-  const [start_date, setStart_Date] = useState(p.start_date);
-  const [end_date, setEnd_Date] = useState(p.end_date);
-  const [status, setStatus] = useState(p.status);
-  const [description, setDescription] = useState(p.description);
+const ProjectEdit = ({ project, state }) => {
+  const [name, setName] = useState(project.project_name);
+  const [startDate, setStartDate] = useState(project.start_date);
+  const [endDate, setEndDate] = useState(project.end_date);
+  const [status, setStatus] = useState(project.status);
+  const [description, setDescription] = useState(project.description);
 
-  const [user_id, setUser_id] = useState(null);
+  const [userId, setUserId] = useState(null);
   const [data, setData] = useState([]);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleSubmit = () => {
     axiosInstance
-      .put(`/user/projects/${p.id}/`, {
+      .put(`/user/projects/${project.id}/`, {
         project_name: name,
-        start_date: start_date,
-        end_date: end_date,
+        start_date: startDate,
+        end_date: endDate,
         status: status,
         description: description,
-        user_id: user_id,
+        user_id: userId,
       })
       .then(() => {
         axiosInstance.get("/user/projects/").then((res) => {
@@ -107,9 +107,9 @@ const ProjectEdit = ({ p, state }) => {
                 <FormLabel>Start date</FormLabel>
                 <Input
                   type="date"
-                  value={start_date}
+                  value={startDate}
                   onChange={(e) => {
-                    setStart_Date(e.target.value);
+                    setStartDate(e.target.value);
                   }}
                 />
               </FormControl>
@@ -118,9 +118,9 @@ const ProjectEdit = ({ p, state }) => {
                 <FormLabel>End date</FormLabel>
                 <Input
                   type="date"
-                  value={end_date}
+                  value={endDate}
                   onChange={(e) => {
-                    setEnd_Date(e.target.value);
+                    setEndDate(e.target.value);
                   }}
                 />
               </FormControl>
@@ -150,7 +150,7 @@ const ProjectEdit = ({ p, state }) => {
                 {data.length && (
                   <>
                     <FormLabel>Add user to the project</FormLabel>
-                    <RadioGroup onChange={setUser_id} value={user_id}>
+                    <RadioGroup onChange={setUserId} value={userId}>
                       <Stack>
                         {data.map((user) => (
                           <Radio key={user.id} value={user.id}>
