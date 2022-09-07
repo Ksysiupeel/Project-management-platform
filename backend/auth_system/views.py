@@ -55,7 +55,7 @@ class UserCreate(APIView):
             return Response(
                 data={"msg": "User created!"}, status=status.HTTP_201_CREATED
             )
-        except (ValidationError) as e:
+        except ValidationError as e:
             return Response(data={"msg": e.args[0]}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -118,7 +118,7 @@ class UserView(APIView):
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(data={"msg": "Updated"}, status=status.HTTP_200_OK)
-        except (ValidationError) as e:
+        except ValidationError as e:
             return Response(data={"msg": e.args[0]}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -175,11 +175,18 @@ class ProjectView(APIView):
                 data={"msg": "Project added"}, status=status.HTTP_201_CREATED
             )
 
-        except (ValidationError) as e:
+        except ValidationError as e:
             return Response(data={"msg": e.args[0]}, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, pk, format=None):
         try:
+
+            project_member = ProjectMembers.objects.filter(
+                user_id=request.user.id
+            ).filter(project_id=pk)
+
+            if not project_member:
+                raise ValidationError("You can't edit a project that you are not in")
 
             if request.data["start_date"] > request.data["end_date"]:
                 raise ValidationError(
@@ -200,13 +207,25 @@ class ProjectView(APIView):
 
             return Response(data={"msg": "Project updated"}, status=status.HTTP_200_OK)
 
-        except (ValidationError) as e:
+        except ValidationError as e:
             return Response(data={"msg": e.args[0]}, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk, format=None):
-        Project.objects.filter(id=pk).delete()
-        ProjectMembers.objects.filter(project_id=pk).delete()
-        return Response(data={"msg": "Project deleted"}, status=status.HTTP_200_OK)
+        try:
+
+            project_member = ProjectMembers.objects.filter(
+                user_id=request.user.id
+            ).filter(project_id=pk)
+
+            if not project_member:
+                raise ValidationError("You can't delete a project that you are not in")
+
+            Project.objects.filter(id=pk).delete()
+            ProjectMembers.objects.filter(project_id=pk).delete()
+            return Response(data={"msg": "Project deleted"}, status=status.HTTP_200_OK)
+
+        except ValidationError as e:
+            return Response(data={"msg": e.args[0]}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CommentView(APIView):
@@ -217,6 +236,15 @@ class CommentView(APIView):
 
     def post(self, request, format=None):
         try:
+
+            project_member = ProjectMembers.objects.filter(
+                user_id=request.user.id
+            ).filter(project_id=request.data["project_id"])
+
+            if not project_member:
+                raise ValidationError(
+                    "You can't add a comment in a project that you are not in"
+                )
 
             if request.data.get("description", None) is None:
                 raise ValidationError("You must provide all required fields")
@@ -237,7 +265,7 @@ class CommentView(APIView):
                 data={"msg": "Comment added"}, status=status.HTTP_201_CREATED
             )
 
-        except (ValidationError) as e:
+        except ValidationError as e:
             return Response(data={"msg": e.args[0]}, status=status.HTTP_400_BAD_REQUEST)
 
 

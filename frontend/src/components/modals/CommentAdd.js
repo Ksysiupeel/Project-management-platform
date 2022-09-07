@@ -28,7 +28,7 @@ const CommentAdd = ({ project_id }) => {
         description: description,
       })
       .then(() => {
-        toast.success("Comment created!", {
+        toast.success("Comment added!", {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: false,

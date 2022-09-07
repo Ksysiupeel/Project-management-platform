@@ -7,6 +7,7 @@ import ProjectDetails from "./modals/ProjectDetails";
 import User from "./modals/User";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Projects = () => {
   const [data, setData] = useState(null);
@@ -30,7 +31,14 @@ const Projects = () => {
       axiosInstance.get("/user/projects/").then((res) => {
         setData(res.data);
       });
-      navigate("/projects");
+      toast.success("Project was deleted!", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+      });
     });
   };
 
