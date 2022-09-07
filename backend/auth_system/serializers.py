@@ -56,7 +56,14 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def to_representation(self, instance):
-        return super().to_representation(instance)
+        return {
+            "id": instance.id,
+            "user_id": instance.user_id.id,
+            "project_id": instance.project_id.id,
+            "description": instance.description,
+            "date_added": str(instance.date_added)[:-13],
+            "author": f"{instance.user_id.first_name} {instance.user_id.last_name}",
+        }
 
 
 class UserListSerializer(serializers.ModelSerializer):

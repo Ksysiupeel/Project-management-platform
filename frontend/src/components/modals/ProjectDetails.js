@@ -35,7 +35,7 @@ const ProjectDetails = ({ project_id }) => {
         Details
       </Button>
 
-      <Modal onClose={onClose} isOpen={isOpen} isCentered>
+      <Modal onClose={onClose} isOpen={isOpen} isCentered size="4xl">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Project Details</ModalHeader>
@@ -45,7 +45,8 @@ const ProjectDetails = ({ project_id }) => {
               {commentData.length ? (
                 commentData.map((comment) => (
                   <Text key={comment.id}>
-                    {comment.date_added} | {comment.description}
+                    {comment.author} {"| "}
+                    {comment.date_added} {"| "} {comment.description}
                   </Text>
                 ))
               ) : (
