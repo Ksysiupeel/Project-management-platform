@@ -55,18 +55,6 @@ const Register = () => {
         });
 
         onClose();
-
-        axios
-          .post("http://127.0.0.1:8000/api/token/obtain/", {
-            email: email,
-            password: password,
-          })
-          .then((res) => {
-            axios.defaults.headers["Authorization"] = "JWT " + res.data.access;
-            window.localStorage.setItem("access_token", res.data.access);
-            window.localStorage.setItem("refresh_token", res.data.refresh);
-            navigate("/projects");
-          });
       })
       .catch((error) => {
         toast.error(error.response.data.msg, {
