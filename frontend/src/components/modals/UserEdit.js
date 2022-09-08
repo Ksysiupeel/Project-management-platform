@@ -20,6 +20,8 @@ import {
 import { toast } from "react-toastify";
 
 const UserEdit = () => {
+  const [userData, setUserData] = useState([]);
+
   const [firstName, setFirstName] = useState();
   const [lastName, setLastName] = useState();
   const [email, setEmail] = useState();
@@ -64,9 +66,22 @@ const UserEdit = () => {
       });
   };
 
+  const getUserData = () => {
+    axiosInstance.get("/user/").then((r) => {
+      setUserData(r.data);
+    });
+  };
+
   return (
     <>
-      <Button colorScheme="whatsapp" onClick={onOpen} size="md">
+      <Button
+        colorScheme="whatsapp"
+        onClick={() => {
+          onOpen();
+          getUserData();
+        }}
+        size="md"
+      >
         Change your data
       </Button>
 
@@ -81,6 +96,7 @@ const UserEdit = () => {
                 <FormLabel>First name</FormLabel>
                 <Input
                   type="text"
+                  placeholder={userData.first_name}
                   value={firstName || ""}
                   onChange={(e) => {
                     setFirstName(e.target.value);
@@ -92,6 +108,7 @@ const UserEdit = () => {
                 <FormLabel>Last name</FormLabel>
                 <Input
                   type="text"
+                  placeholder={userData.last_name}
                   value={lastName || ""}
                   onChange={(e) => {
                     setLastName(e.target.value);
@@ -103,6 +120,7 @@ const UserEdit = () => {
                 <FormLabel>Email</FormLabel>
                 <Input
                   type="email"
+                  placeholder={userData.email}
                   value={email || ""}
                   onChange={(e) => {
                     setEmail(e.target.value);
@@ -114,6 +132,7 @@ const UserEdit = () => {
                 <FormLabel>Password</FormLabel>
                 <Input
                   type="password"
+                  placeholder="your secret password"
                   value={password || ""}
                   onChange={(e) => {
                     setPassword(e.target.value);
@@ -134,7 +153,10 @@ const UserEdit = () => {
               <FormControl>
                 <FormLabel>Birth date</FormLabel>
                 <Input
-                  type="date"
+                  type="text"
+                  placeholder={userData.birth_date}
+                  onFocus={(e) => (e.target.type = "date")}
+                  onBlur={(e) => (e.target.type = "text")}
                   value={birthDate || ""}
                   onChange={(e) => {
                     setBirthDate(e.target.value);
@@ -146,6 +168,7 @@ const UserEdit = () => {
                 <FormLabel>Phone number</FormLabel>
                 <Input
                   type="text"
+                  placeholder={userData.phone_number}
                   value={phoneNumber || ""}
                   onChange={(e) => {
                     setPhoneNumber(e.target.value);

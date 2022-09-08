@@ -1,3 +1,4 @@
+from typing import Iterable
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -160,17 +161,21 @@ class ProjectView(APIView):
 
             member_serializer.save()
 
-            if request.data["users_id"]:
+            if request.data.get("users_id"):
+                if isinstance(request.data["users_id"], Iterable):
 
-                for id in request.data["users_id"]:
-                    members_serializer = ProjectMembersSerializer(
-                        data={
-                            "user_id": id,
-                            "project_id": serializer.data["id"],
-                        }
-                    )
-                    members_serializer.is_valid(raise_exception=True)
-                    members_serializer.save()
+                    for id in request.data["users_id"]:
+                        members_serializer = ProjectMembersSerializer(
+                            data={
+                                "user_id": id,
+                                "project_id": serializer.data["id"],
+                            }
+                        )
+                        members_serializer.is_valid(raise_exception=True)
+                        members_serializer.save()
+
+                else:
+                    raise ValidationError("users_id parameter must be iterable")
 
             return Response(
                 data={"msg": "Project added"}, status=status.HTTP_201_CREATED
@@ -200,17 +205,21 @@ class ProjectView(APIView):
             serializer.is_valid(raise_exception=True)
             serializer.save()
 
-            if request.data["users_id"]:
+            if request.data.get("users_id"):
+                if isinstance(request.data["users_id"], Iterable):
 
-                for id in request.data["users_id"]:
-                    members_serializer = ProjectMembersSerializer(
-                        data={
-                            "user_id": id,
-                            "project_id": serializer.data["id"],
-                        }
-                    )
-                    members_serializer.is_valid(raise_exception=True)
-                    members_serializer.save()
+                    for id in request.data["users_id"]:
+                        members_serializer = ProjectMembersSerializer(
+                            data={
+                                "user_id": id,
+                                "project_id": serializer.data["id"],
+                            }
+                        )
+                        members_serializer.is_valid(raise_exception=True)
+                        members_serializer.save()
+
+                else:
+                    raise ValidationError("users_id parameter must be iterable")
 
             return Response(data={"msg": "Project updated"}, status=status.HTTP_200_OK)
 
