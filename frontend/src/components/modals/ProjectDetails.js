@@ -54,7 +54,9 @@ const ProjectDetails = ({ project_id }) => {
             </Stack>
           </ModalBody>
           <ModalFooter>
-            <Button onClick={onClose}>Close</Button>
+            <Button onClick={onClose} colorScheme="red">
+              Close
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

@@ -296,3 +296,7 @@ class ProjectMembersView(APIView):
         members = ProjectMembers.objects.filter(project_id=pk)
         serializer = ProjectMembersSerializer(members, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+    def delete(self, request, pk, format=None):
+        ProjectMembers.objects.filter(user_id=pk).delete()
+        return Response(data={"msg": "member deleted"}, status=status.HTTP_200_OK)

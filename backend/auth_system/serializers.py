@@ -50,7 +50,7 @@ class ProjectMembersSerializer(serializers.ModelSerializer):
         return {
             "user_id": instance.user_id.id,
             "project_id": instance.project_id.id,
-            "member": f"{instance.user_id.first_name} {instance.user_id.last_name}",
+            "name": f"{instance.user_id.first_name} {instance.user_id.last_name}",
         }
 
 

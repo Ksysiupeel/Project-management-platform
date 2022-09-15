@@ -5,6 +5,7 @@ import CommentAdd from "./modals/CommentAdd";
 import ProjectAdd from "./modals/ProjectAdd";
 import ProjectDetails from "./modals/ProjectDetails";
 import User from "./modals/User";
+import ProjectMembers from "./modals/ProjectMembers";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -55,6 +56,7 @@ const Projects = () => {
               <p>Project status: {project.status}</p>
               <p>Project description: {project.description}</p>
               <ProjectEdit project={project} state={setData} />
+              <ProjectMembers projectId={project.id} />
               <CommentAdd project_id={project.id} />
               <ProjectDetails project_id={project.id} />
               <button

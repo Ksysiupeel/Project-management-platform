@@ -49,11 +49,11 @@ const User = () => {
               <Text>Email: {userData.email}</Text>
               <Text>Gender: {userData.gender}</Text>
               <Text>Birth date: {userData.birth_date}</Text>
-              <Text>Phone number: {userData.phone_number}</Text>
+              <Text>Phone number: {userData.phone_number || "unkown"}</Text>
             </Stack>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="linkedin" onClick={onClose}>
+            <Button colorScheme="red" onClick={onClose}>
               Close
             </Button>
           </ModalFooter>

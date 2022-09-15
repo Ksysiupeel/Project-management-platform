@@ -18,7 +18,6 @@ import {
   FormLabel,
 } from "@chakra-ui/react";
 import { toast } from "react-toastify";
-import Select from "react-select";
 
 const ProjectEdit = ({ project, state }) => {
   const [name, setName] = useState(project.project_name);
@@ -26,9 +25,6 @@ const ProjectEdit = ({ project, state }) => {
   const [endDate, setEndDate] = useState(project.end_date);
   const [status, setStatus] = useState(project.status);
   const [description, setDescription] = useState(project.description);
-
-  const [usersId, setUsersId] = useState([]);
-  const [data, setData] = useState([]);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -40,7 +36,6 @@ const ProjectEdit = ({ project, state }) => {
         end_date: endDate,
         status: status,
         description: description,
-        users_id: usersId.map((id) => id.value),
       })
       .then(() => {
         axiosInstance.get("/user/projects/").then((res) => {
@@ -69,22 +64,9 @@ const ProjectEdit = ({ project, state }) => {
       });
   };
 
-  const UserList = () => {
-    axiosInstance.get("/users/").then((r) => {
-      setData(r.data);
-    });
-  };
-
   return (
     <>
-      <Button
-        onClick={() => {
-          onOpen();
-          UserList();
-        }}
-      >
-        Change
-      </Button>
+      <Button onClick={onOpen}>Change</Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -146,29 +128,6 @@ const ProjectEdit = ({ project, state }) => {
                   }}
                 />
               </FormControl>
-
-              {data.length ? (
-                <>
-                  <FormControl>
-                    <FormLabel>Add users to the project</FormLabel>
-                    <Select
-                      closeMenuOnSelect={false}
-                      onChange={setUsersId}
-                      isMulti
-                      isSearchable={true}
-                      placeholder="Select users..."
-                      options={data.map((user) => ({
-                        value: user.id,
-                        label: (
-                          <>
-                            {user.first_name} {user.last_name}
-                          </>
-                        ),
-                      }))}
-                    />
-                  </FormControl>
-                </>
-              ) : null}
             </form>
           </ModalBody>
 
