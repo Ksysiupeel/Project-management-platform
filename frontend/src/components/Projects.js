@@ -1,4 +1,4 @@
-import axiosInstance from "./axiosApi";
+import axiosInstance from "../axiosApi";
 import UserEdit from "./modals/UserEdit";
 import ProjectEdit from "./modals/ProjectEdit";
 import CommentAdd from "./modals/CommentAdd";
@@ -11,7 +11,6 @@ import { toast } from "react-toastify";
 
 const Projects = () => {
   const [data, setData] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
 
   const navigate = useNavigate();
 
@@ -21,7 +20,6 @@ const Projects = () => {
     } else {
       axiosInstance.get("/user/projects/").then((res) => {
         setData(res.data);
-        setIsLoading(false);
       });
     }
   }, []);
@@ -44,7 +42,6 @@ const Projects = () => {
 
   return (
     <div className="projects">
-      {isLoading && <div>Loading....</div>}
       <User /> <br /> <br />
       <UserEdit /> <br /> <br />
       <ProjectAdd state={setData} />

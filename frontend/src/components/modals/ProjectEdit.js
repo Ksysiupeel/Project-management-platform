@@ -1,4 +1,4 @@
-import axiosInstance from "../axiosApi";
+import axiosInstance from "../../axiosApi";
 import { useState } from "react";
 import {
   Modal,
@@ -147,9 +147,9 @@ const ProjectEdit = ({ project, state }) => {
                 />
               </FormControl>
 
-              <FormControl>
-                {data.length && (
-                  <>
+              {data.length ? (
+                <>
+                  <FormControl>
                     <FormLabel>Add users to the project</FormLabel>
                     <Select
                       closeMenuOnSelect={false}
@@ -166,9 +166,9 @@ const ProjectEdit = ({ project, state }) => {
                         ),
                       }))}
                     />
-                  </>
-                )}
-              </FormControl>
+                  </FormControl>
+                </>
+              ) : null}
             </form>
           </ModalBody>
 

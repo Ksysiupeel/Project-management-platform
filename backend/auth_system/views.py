@@ -1,9 +1,3 @@
-from typing import Iterable
-from rest_framework import status
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
-from rest_framework.exceptions import ValidationError
 from .serializers import (
     UserSerializer,
     ProjectSerializer,
@@ -12,6 +6,11 @@ from .serializers import (
     UserListSerializer,
 )
 from .models import User, Project, ProjectMembers, Comment
+from rest_framework import status
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
+from rest_framework.exceptions import ValidationError
 from datetime import date
 import re
 
@@ -162,7 +161,7 @@ class ProjectView(APIView):
             member_serializer.save()
 
             if request.data.get("users_id"):
-                if isinstance(request.data["users_id"], Iterable):
+                if isinstance(request.data["users_id"], list):
 
                     for id in request.data["users_id"]:
                         members_serializer = ProjectMembersSerializer(
@@ -175,7 +174,7 @@ class ProjectView(APIView):
                         members_serializer.save()
 
                 else:
-                    raise ValidationError("users_id parameter must be iterable")
+                    raise ValidationError("users_id parameter must be a list")
 
             return Response(
                 data={"msg": "Project added"}, status=status.HTTP_201_CREATED
@@ -206,7 +205,7 @@ class ProjectView(APIView):
             serializer.save()
 
             if request.data.get("users_id"):
-                if isinstance(request.data["users_id"], Iterable):
+                if isinstance(request.data["users_id"], list):
 
                     for id in request.data["users_id"]:
                         members_serializer = ProjectMembersSerializer(
@@ -219,7 +218,7 @@ class ProjectView(APIView):
                         members_serializer.save()
 
                 else:
-                    raise ValidationError("users_id parameter must be iterable")
+                    raise ValidationError("users_id parameter must be a list")
 
             return Response(data={"msg": "Project updated"}, status=status.HTTP_200_OK)
 
@@ -289,4 +288,11 @@ class UserListView(APIView):
     def get(self, request):
         users = User.objects.exclude(id=request.user.id)
         serializer = UserListSerializer(users, many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+
+class ProjectMembersView(APIView):
+    def get(self, request, pk, format=None):
+        members = ProjectMembers.objects.filter(project_id=pk)
+        serializer = ProjectMembersSerializer(members, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)

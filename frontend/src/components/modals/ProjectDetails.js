@@ -1,4 +1,4 @@
-import axiosInstance from "../axiosApi";
+import axiosInstance from "../../axiosApi";
 import { useState } from "react";
 import {
   Modal,
@@ -45,8 +45,7 @@ const ProjectDetails = ({ project_id }) => {
               {commentData.length ? (
                 commentData.map((comment) => (
                   <Text key={comment.id}>
-                    {comment.author} {"| "}
-                    {comment.date_added} {"| "} {comment.description}
+                    {`${comment.author} | ${comment.date_added} | ${comment.description}`}
                   </Text>
                 ))
               ) : (

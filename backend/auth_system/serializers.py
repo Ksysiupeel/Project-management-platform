@@ -47,7 +47,11 @@ class ProjectMembersSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def to_representation(self, instance):
-        return super().to_representation(instance)
+        return {
+            "user_id": instance.user_id.id,
+            "project_id": instance.project_id.id,
+            "member": f"{instance.user_id.first_name} {instance.user_id.last_name}",
+        }
 
 
 class CommentSerializer(serializers.ModelSerializer):

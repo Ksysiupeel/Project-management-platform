@@ -1,3 +1,4 @@
+import axiosInstance from "../../axiosApi";
 import { useState } from "react";
 import axios from "axios";
 import {
@@ -45,16 +46,28 @@ const Register = () => {
         phone_number: phoneNumber,
       })
       .then(() => {
-        toast.success("User was created!", {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          draggable: true,
-          progress: undefined,
-        });
+        axiosInstance
+          .post("/token/obtain/", {
+            email: email,
+            password: password,
+          })
+          .then((res) => {
+            axiosInstance.defaults.headers["Authorization"] =
+              "JWT " + res.data.access;
+            window.localStorage.setItem("access_token", res.data.access);
+            window.localStorage.setItem("refresh_token", res.data.refresh);
+            toast.success("User was created!", {
+              position: "top-right",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              draggable: true,
+              progress: undefined,
+            });
 
-        onClose();
+            onClose();
+            navigate("/projects");
+          });
       })
       .catch((error) => {
         toast.error(error.response.data.msg, {

@@ -1,4 +1,4 @@
-import axiosInstance from "../axiosApi";
+import axiosInstance from "../../axiosApi";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
