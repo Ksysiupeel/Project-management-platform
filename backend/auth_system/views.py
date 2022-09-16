@@ -131,7 +131,7 @@ class ProjectView(APIView):
     def post(self, request):
         try:
 
-            if len(request.data) < 5:
+            if len(request.data) < 4:
                 raise ValidationError("You must provide all required fields")
 
             if request.data["start_date"] > request.data["end_date"]:
@@ -159,22 +159,6 @@ class ProjectView(APIView):
             member_serializer.is_valid(raise_exception=True)
 
             member_serializer.save()
-
-            if request.data.get("users_id"):
-                if isinstance(request.data["users_id"], list):
-
-                    for id in request.data["users_id"]:
-                        members_serializer = ProjectMembersSerializer(
-                            data={
-                                "user_id": id,
-                                "project_id": serializer.data["id"],
-                            }
-                        )
-                        members_serializer.is_valid(raise_exception=True)
-                        members_serializer.save()
-
-                else:
-                    raise ValidationError("users_id parameter must be a list")
 
             return Response(
                 data={"msg": "Project added"}, status=status.HTTP_201_CREATED
@@ -269,8 +253,11 @@ class CommentView(APIView):
 
 
 class UserListView(APIView):
-    def get(self, request):
-        users = User.objects.exclude(id=request.user.id)
+    def get(self, request, pk, format=None):
+        project_members = ProjectMembers.objects.filter(project_id=pk)
+        project_members_exclude = [member.user_id.id for member in project_members]
+
+        users = User.objects.exclude(id__in=project_members_exclude)
         serializer = UserListSerializer(users, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 

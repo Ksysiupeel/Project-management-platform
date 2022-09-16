@@ -30,7 +30,7 @@ const ProjectMembers = ({ projectId }) => {
   };
 
   const UserList = () => {
-    axiosInstance.get("/users/").then((r) => {
+    axiosInstance.get(`/users/${projectId}/`).then((r) => {
       setData(r.data);
     });
   };
@@ -50,6 +50,7 @@ const ProjectMembers = ({ projectId }) => {
           progress: undefined,
         });
         getProjectMembers();
+        UserList();
       });
   };
 
@@ -66,6 +67,7 @@ const ProjectMembers = ({ projectId }) => {
           progress: undefined,
         });
         getProjectMembers();
+        UserList();
       });
   };
 

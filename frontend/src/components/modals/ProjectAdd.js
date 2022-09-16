@@ -15,15 +15,12 @@ import {
   FormLabel,
 } from "@chakra-ui/react";
 import { toast } from "react-toastify";
-import Select from "react-select";
 
 const ProjectAdd = ({ state }) => {
   const [name, setName] = useState();
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
   const [description, setDescription] = useState();
-  const [usersId, setUsersId] = useState([]);
-  const [data, setData] = useState([]);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -34,7 +31,6 @@ const ProjectAdd = ({ state }) => {
         start_date: startDate,
         end_date: endDate,
         description: description,
-        users_id: usersId.map((id) => id.value),
       })
       .then(() => {
         axiosInstance.get("/user/projects/").then((res) => {
@@ -64,22 +60,9 @@ const ProjectAdd = ({ state }) => {
       });
   };
 
-  const UserList = () => {
-    axiosInstance.get("/users/").then((r) => {
-      setData(r.data);
-    });
-  };
-
   return (
     <>
-      <Button
-        colorScheme="whatsapp"
-        onClick={() => {
-          onOpen();
-          UserList();
-        }}
-        size="md"
-      >
+      <Button colorScheme="whatsapp" onClick={onOpen} size="md">
         Create a new project
       </Button>
 
@@ -132,29 +115,6 @@ const ProjectAdd = ({ state }) => {
                     setDescription(e.target.value);
                   }}
                 />
-              </FormControl>
-
-              <FormControl>
-                {data.length ? (
-                  <>
-                    <FormLabel>Add users to the project</FormLabel>
-                    <Select
-                      closeMenuOnSelect={false}
-                      onChange={setUsersId}
-                      isMulti
-                      isSearchable={true}
-                      placeholder="Select users..."
-                      options={data.map((user) => ({
-                        value: user.id,
-                        label: (
-                          <>
-                            {user.first_name} {user.last_name}
-                          </>
-                        ),
-                      }))}
-                    />
-                  </>
-                ) : null}
               </FormControl>
             </form>
           </ModalBody>
