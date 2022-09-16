@@ -204,22 +204,6 @@ class ProjectView(APIView):
             serializer.is_valid(raise_exception=True)
             serializer.save()
 
-            if request.data.get("users_id"):
-                if isinstance(request.data["users_id"], list):
-
-                    for id in request.data["users_id"]:
-                        members_serializer = ProjectMembersSerializer(
-                            data={
-                                "user_id": id,
-                                "project_id": serializer.data["id"],
-                            }
-                        )
-                        members_serializer.is_valid(raise_exception=True)
-                        members_serializer.save()
-
-                else:
-                    raise ValidationError("users_id parameter must be a list")
-
             return Response(data={"msg": "Project updated"}, status=status.HTTP_200_OK)
 
         except ValidationError as e:
@@ -293,10 +277,24 @@ class UserListView(APIView):
 
 class ProjectMembersView(APIView):
     def get(self, request, pk, format=None):
-        members = ProjectMembers.objects.filter(project_id=pk)
+        members = ProjectMembers.objects.filter(project_id=pk).exclude(
+            user_id=request.user.id
+        )
         serializer = ProjectMembersSerializer(members, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     def delete(self, request, pk, format=None):
-        ProjectMembers.objects.filter(user_id=pk).delete()
-        return Response(data={"msg": "member deleted"}, status=status.HTTP_200_OK)
+        try:
+            project_member = ProjectMembers.objects.filter(
+                user_id=request.user.id
+            ).filter(project_id=request.query_params["project_id"])
+
+            if not project_member:
+                raise ValidationError(
+                    "You can't remove a member from the project that you are not in"
+                )
+
+            ProjectMembers.objects.filter(user_id=pk).delete()
+            return Response(data={"msg": "member removed"}, status=status.HTTP_200_OK)
+        except ValidationError as e:
+            return Response(data={"msg": e.args[0]}, status=status.HTTP_400_BAD_REQUEST)

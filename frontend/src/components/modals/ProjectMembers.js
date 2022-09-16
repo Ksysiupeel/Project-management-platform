@@ -25,17 +25,19 @@ const ProjectMembers = ({ projectId }) => {
   };
 
   const deleteMember = (user_id) => {
-    axiosInstance.delete(`/projectmembers/${user_id}/`).then(() => {
-      toast.success("Member was deleted!", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        draggable: true,
-        progress: undefined,
+    axiosInstance
+      .delete(`/projectmembers/${user_id}/?project_id=${projectId}`)
+      .then(() => {
+        toast.success("Member was removed!", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+        });
+        getProjectMembers();
       });
-      getProjectMembers();
-    });
   };
 
   return (
@@ -55,23 +57,29 @@ const ProjectMembers = ({ projectId }) => {
           <ModalHeader textAlign="center">Project Members</ModalHeader>
           <ModalCloseButton />
           <ModalBody textAlign="center">
-            {members.map((member) => (
-              <Text key={member.user_id}>
-                {member.name} {""}
-                <Button
-                  colorScheme="cyan"
-                  color="white"
-                  size="sm"
-                  type="submit"
-                  onClick={() => {
-                    deleteMember(member.user_id);
-                  }}
-                >
-                  Remove
-                </Button>
-                <br /> <br />
+            {members.length ? (
+              members.map((member) => (
+                <Text key={member.user_id}>
+                  {member.name} {""}
+                  <Button
+                    colorScheme="cyan"
+                    color="white"
+                    size="sm"
+                    type="submit"
+                    onClick={() => {
+                      deleteMember(member.user_id);
+                    }}
+                  >
+                    Remove
+                  </Button>
+                  <br /> <br />
+                </Text>
+              ))
+            ) : (
+              <Text>
+                There are no other users of the project other than you
               </Text>
-            ))}
+            )}
           </ModalBody>
           <ModalFooter>
             <Button onClick={onClose} colorScheme="red">
