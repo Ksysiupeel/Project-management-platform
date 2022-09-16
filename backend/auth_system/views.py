@@ -229,7 +229,7 @@ class ProjectView(APIView):
 
 class CommentView(APIView):
     def get(self, request, pk, format=None):
-        comment = Comment.objects.filter(project_id=pk)
+        comment = Comment.objects.filter(project_id=pk).order_by("date_added")
         ser = CommentSerializer(comment, many=True)
         return Response(data=ser.data, status=status.HTTP_200_OK)
 
@@ -282,6 +282,37 @@ class ProjectMembersView(APIView):
         )
         serializer = ProjectMembersSerializer(members, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, pk, format=None):
+        try:
+            project_member = ProjectMembers.objects.filter(
+                user_id=request.user.id
+            ).filter(project_id=pk)
+
+            if not project_member:
+                raise ValidationError(
+                    "You can't add a user to a project that you are not in"
+                )
+
+            if isinstance(request.data["users_id"], list):
+
+                for id in request.data["users_id"]:
+                    member_serializer = ProjectMembersSerializer(
+                        data={
+                            "user_id": id,
+                            "project_id": pk,
+                        }
+                    )
+                    member_serializer.is_valid(raise_exception=True)
+                    member_serializer.save()
+
+            else:
+                raise ValidationError("users_id parameter must be a list")
+
+            return Response(data={"msg": "User added"}, status=status.HTTP_200_OK)
+
+        except ValidationError as e:
+            return Response(data={"msg": e.args[0]}, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk, format=None):
         try:

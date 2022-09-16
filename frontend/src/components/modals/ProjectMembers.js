@@ -10,18 +10,47 @@ import {
   Button,
   useDisclosure,
   Text,
+  FormLabel,
+  FormControl,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import Select from "react-select";
 
 const ProjectMembers = ({ projectId }) => {
   const [members, setMembers] = useState([]);
+  const [usersId, setUsersId] = useState([]);
+  const [data, setData] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const getProjectMembers = () => {
     axiosInstance.get(`/projectmembers/${projectId}/`).then((res) => {
       setMembers(res.data);
     });
+  };
+
+  const UserList = () => {
+    axiosInstance.get("/users/").then((r) => {
+      setData(r.data);
+    });
+  };
+
+  const addMembers = () => {
+    axiosInstance
+      .post(`/projectmembers/${projectId}/`, {
+        users_id: usersId.map((id) => id.value),
+      })
+      .then(() => {
+        toast.success("User was added!", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+        });
+        getProjectMembers();
+      });
   };
 
   const deleteMember = (user_id) => {
@@ -46,6 +75,7 @@ const ProjectMembers = ({ projectId }) => {
         onClick={() => {
           onOpen();
           getProjectMembers();
+          UserList();
         }}
       >
         Members
@@ -65,7 +95,6 @@ const ProjectMembers = ({ projectId }) => {
                     colorScheme="cyan"
                     color="white"
                     size="sm"
-                    type="submit"
                     onClick={() => {
                       deleteMember(member.user_id);
                     }}
@@ -80,6 +109,43 @@ const ProjectMembers = ({ projectId }) => {
                 There are no other users of the project other than you
               </Text>
             )}
+            <br /> <br />
+            {data.length ? (
+              <>
+                <form>
+                  <FormControl>
+                    <FormLabel textAlign="center">
+                      Add users to the project
+                    </FormLabel>
+                    <Select
+                      closeMenuOnSelect={false}
+                      onChange={setUsersId}
+                      isMulti
+                      isSearchable={true}
+                      placeholder="Select users..."
+                      options={data.map((user) => ({
+                        value: user.id,
+                        label: (
+                          <>
+                            {user.first_name} {user.last_name}
+                          </>
+                        ),
+                      }))}
+                    />
+
+                    <br />
+                    <Button
+                      onClick={() => {
+                        addMembers();
+                      }}
+                      colorScheme="linkedin"
+                    >
+                      Add
+                    </Button>
+                  </FormControl>
+                </form>
+              </>
+            ) : null}
           </ModalBody>
           <ModalFooter>
             <Button onClick={onClose} colorScheme="red">
